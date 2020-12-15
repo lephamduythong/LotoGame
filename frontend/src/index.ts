@@ -1,20 +1,73 @@
 import './styles/style.scss';
-import { gsap, Linear } from 'gsap'
+import { gsap, Linear  } from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
+import { delay } from './app/ulti'
 
 gsap.registerPlugin(CustomEase)
 
-// CustomEase.create("clgt", "M0,0 C0.128,0.572 0.521,1.082 0.776,1.156 0.842,1.175 0.919,1.152 0.944,1.144 1.014,1.118 0.93,1 1,1 ")
+CustomEase.create("clgtEase", "M0,0 C0.128,0.572 0.521,1.082 0.776,1.156 0.842,1.175 0.919,1.152 0.944,1.144 1.014,1.118 0.93,1 1,1 ")
 
-document.getElementById('btn').addEventListener('click', _ => {
-    gsap.to('#sun', { 
-        duration: 10, 
-        rotation: "360",
-        repeat: -1,
-        ease: Linear.easeNone,
-        transformOrigin:"50% 50%" 
-    })
+let tl = gsap.timeline({repeat:1, yoyo: true})
+document.getElementById('btn_timeline').addEventListener('click', _ => {
+    tl.restart()
+    tl.to('#clgt1', {duration: 0.5, x:500})
+    tl.to('#clgt1', {duration: 0.5, delay:0.2 , y:100, rotation: "45deg"})
 })
+
+gsap.set('#sun', {
+    transformOrigin: "50% 50%"
+})
+gsap.set('#group1', {
+    transformOrigin: "50% 50%"
+})
+
+let sunTween = gsap.to('#sun', { 
+    duration: 2,
+    rotation: "360deg",
+    repeat: -1
+})
+let groupTween = gsap.from('#group1', { 
+    duration: 0.1, 
+    rotation: "360",
+    repeat: -1,
+    ease: Linear.easeNone,
+}) 
+let rect2Tween = gsap.to('#rect2', { 
+    duration: 10,
+    x: "100"
+}) 
+
+document.getElementById('btn_start').addEventListener('click', _ => {
+    sunTween.resume()
+    groupTween.resume()
+}) 
+
+document.getElementById('btn_pause').addEventListener('click', _ => {
+    sunTween.pause()
+    groupTween.pause()
+})
+
+document.getElementById('btn_seek').addEventListener('click', _ => {
+    rect2Tween.seek(1)
+})
+
+document.getElementById('btn_timescale').addEventListener('click', _ => {
+    rect2Tween.timeScale(3)
+})
+
+async function test() {
+    while (true) {
+        await delay(2000)
+        gsap.to('#rect1', { 
+            duration: 1, 
+            ease: Linear.easeNone,
+            x : "random(-100, 100)",
+            y : "random(-100, 100)",
+        })
+    }
+}
+
+test()
 
 
 /*
