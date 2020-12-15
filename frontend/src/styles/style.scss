@@ -1,0 +1,48 @@
+@import '/node_modules/normalize.css/normalize.css';
+
+@import 'modules/variables';
+@import 'modules/base';
+
+#svg_test {
+    border: solid black 1px;
+    margin: 50px;
+}
+
+.red-text {
+    color: blue
+}
+
+.tl-popup-container {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    background-color: black;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.75;
+}
+  
+.tl-popup {
+    width: 0vw;
+    height: 0vh;
+    border: solid black 1px;
+    background-color: white;
+    transition-property: width, height;
+    transition-duration: 200ms;
+    margin-top: 20px;
+}
+
+.tl-popup-open {
+    width: 80vw;
+    height: 80vh;
+}
+
+.tl-popup-close {
+    width: 0vw;
+    height: 0vh;
+}
+
+.tl-hidden {
+    display: none;
+}
