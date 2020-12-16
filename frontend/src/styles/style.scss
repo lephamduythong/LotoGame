@@ -3,30 +3,6 @@
 @import 'modules/variables';
 @import 'modules/base';
 
-#clgt1 {
-    height: 100px;
-    width: 100px;
-    background-color: green;
-}
-
-.div_clgt {
-    width: 100px;
-    height: 100px;
-    background-color: red;
-    border: solid black 1px;
-    margin: 20px;
-    display: inline-block;
-}
-
-#svg_test {
-    border: solid black 1px;
-    margin: 50px;
-}
-
-.red-text {
-    color: blue
-}
-
 .tl-popup-container {
     display: flex;
     justify-content: center;
