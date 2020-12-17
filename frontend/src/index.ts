@@ -10,7 +10,7 @@ declare type MyImage = {
     player? : HTMLImageElement
 }
 const images : MyImage = {};
-images.player = new HTMLImageElement();
+images.player = new Image();
 images.player.src = 'https://i.ibb.co/Ybk7y06/character.png';
 const characterActions : string[] = ['up', 'top right', 'right', 'down right', 'down'];
 const numberOfCharacters : number = 25;
