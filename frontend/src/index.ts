@@ -6,8 +6,11 @@ canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
 // load images
-const images : any = {};
-images.player = new Image();
+declare type MyImage = {
+    player? : HTMLImageElement
+}
+const images : MyImage = {};
+images.player = new HTMLImageElement();
 images.player.src = 'https://i.ibb.co/Ybk7y06/character.png';
 const characterActions : string[] = ['up', 'top right', 'right', 'down right', 'down'];
 const numberOfCharacters : number = 25;
