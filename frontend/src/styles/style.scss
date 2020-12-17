@@ -2,3 +2,49 @@
 
 @import 'modules/variables';
 @import 'modules/base';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0E1113;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-container { 
+    position: relative;
+    width: 300px;
+    overflow: hidden;
+}
+
+#img-container > img {
+    width: 100%;
+}
+
+#wave {
+    position: absolute;
+    width: 200%;
+    left: 0;
+    z-index: 1;
+    animation: wave linear 3s infinite ;
+    // animation-direction: alternate;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
