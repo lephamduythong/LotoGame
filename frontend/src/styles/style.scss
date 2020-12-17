@@ -2,3 +2,15 @@
 
 @import 'modules/variables';
 @import 'modules/base';
+
+#container {
+    display: block;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    height: 100px;
+    width: 100px;
+    background-color: red;
+    border: solid black 1px;
+    filter: url(#filter_bloom)
+}

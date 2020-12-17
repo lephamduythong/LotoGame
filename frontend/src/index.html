@@ -11,7 +11,36 @@
 </head>
 
 <body>
+  <div id="container">
+
+  </div>
+  <svg>
+    <defs>
+      <filter id="filter_bloom" inkscape:label="Bloom" inkscape:menu="Bevels"
+        inkscape:menu-tooltip="Soft, cushion-like bevel with matte highlights" style="color-interpolation-filters:sRGB;"
+        id="filter2406">
+        <feGaussianBlur result="result1" in="SourceAlpha" stdDeviation="2.2" id="feGaussianBlur2382" />
+        <feSpecularLighting result="result0" specularExponent="18.1" specularConstant="2" surfaceScale="5"
+          id="feSpecularLighting2386">
+          <feDistantLight azimuth="225" elevation="24" id="feDistantLight2384" />
+        </feSpecularLighting>
+        <feComposite result="result6" operator="in" in2="SourceAlpha" id="feComposite2388" />
+        <feMorphology radius="5.7" operator="dilate" id="feMorphology2390" />
+        <feGaussianBlur result="result11" stdDeviation="5.7" id="feGaussianBlur2392" />
+        <feDiffuseLighting surfaceScale="5" result="result3" diffuseConstant="2" in="result1"
+          id="feDiffuseLighting2396">
+          <feDistantLight elevation="25" azimuth="225" id="feDistantLight2394" />
+        </feDiffuseLighting>
+        <feBlend result="result7" mode="multiply" in="result3" in2="SourceGraphic" id="feBlend2398" />
+        <feComposite in="result7" operator="in" in2="SourceAlpha" result="result91" id="feComposite2400" />
+        <feBlend result="result9" mode="lighten" in="result6" in2="result91" id="feBlend2402" />
+        <feComposite in="result11" in2="result9" id="feComposite2404" />
+      </filter>
+    </defs>
+    </defs>
+  </svg>
   <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+
 </body>
 
 </html>
