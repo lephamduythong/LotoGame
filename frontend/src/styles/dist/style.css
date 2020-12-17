@@ -1,0 +1,26 @@
+@import '/node_modules/normalize.css/normalize.css';
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  display: block;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  height: 100px;
+  width: 100px;
+  background-color: red;
+  border: solid black 1px;
+  filter: url(#filter_bloom);
+  transition: 0.1s;
+}
+
+#container:hover {
+  height: 200px;
+  border-radius: 20%;
+}
