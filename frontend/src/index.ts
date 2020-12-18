@@ -76,6 +76,15 @@ async function setup() {
     addAudioThemeToggleEvent()
     addJoinEvent()
 
+    let x = document.getElementById('svg-input-wrapper')
+    let y = document.getElementById('input-name-frame')
+    console.log(x)
+    console.log(y.children)
+    for (let i = 0; i < y.children.length; i++) {
+        console.log(i)
+        x.appendChild(y.children[i])
+    }
+
     // let autoPlayCheck = audioThemeElement.play()
     // if (autoPlayCheck !== undefined) {
     //     autoPlayCheck.then(_ => {

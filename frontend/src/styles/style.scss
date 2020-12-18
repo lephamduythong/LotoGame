@@ -38,17 +38,11 @@ body {
 }
 
 .input-container {
-    height: 75px;
-    display: block;
     position: relative;
 }
 
 .input-container > input, svg {
     position: absolute;
-}
-
-.input-container > svg {
-    transform: scaleX(1.5)
 }
 
 .input-container > input {
@@ -60,11 +54,4 @@ body {
     resize: none;
     border: none;
     z-index: 10;
-}
-
-#input-name-frame {
-    position: absolute;
-    top: 100px;
-    left : 310px;
-    z-index: 99;
 }
