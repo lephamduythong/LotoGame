@@ -11,6 +11,7 @@
 
 body {
     background-color: #0E1113;
+    color: white;
 }
 
 .container {
@@ -21,30 +22,49 @@ body {
     align-items: center;
 }
 
-#img-container { 
+#svg-game-container {
+    width: 100vw !important;
+    height: 100vh !important;
+}
+
+#svg-music-note, #svg-music-note-cross {
+    cursor: pointer;
+}
+
+#svg-frame {
+    transform: translateX(-287px);
+    transition-property: width, height;
+    transition-duration: 0.2s;
+}
+
+.input-container {
+    height: 75px;
+    display: block;
     position: relative;
-    width: 300px;
-    overflow: hidden;
 }
 
-#img-container > img {
-    width: 100%;
-}
-
-#wave {
+.input-container > input, svg {
     position: absolute;
-    width: 200%;
-    left: 0;
-    z-index: 1;
-    animation: wave linear 3s infinite ;
-    // animation-direction: alternate;
 }
 
-@keyframes wave {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+.input-container > svg {
+    transform: scaleX(1.5)
+}
+
+.input-container > input {
+    top: 40px;
+    left: 55px;
+    outline: none;
+    background: none;
+    color: white;
+    resize: none;
+    border: none;
+    z-index: 10;
+}
+
+#input-name-frame {
+    position: absolute;
+    top: 100px;
+    left : 310px;
+    z-index: 99;
 }
