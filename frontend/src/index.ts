@@ -3,41 +3,49 @@ import {delay} from './app/ulti'
 
 let debugElement : HTMLDivElement
 
+let gameContainerElement : HTMLElement
+
 let svgHiddenLayerElement : HTMLElement
 
 let audioThemeElement : HTMLAudioElement
 let audioThemeToggleElement : HTMLElement, 
-    audioThemeCross : HTMLElement
+    audioThemeCrossElement : HTMLElement
 let isAudioThemeDisabled : boolean = false
-
-let svgFrame : HTMLElement
-let originalFrameWidth : string
-let originalFrameHeight : string
 
 let joinButtonElement : HTMLElement
 
+let inputContainerElement : HTMLElement
+let input : HTMLElement
+let inputCloseButtonElement : HTMLElement
+let inputSubmitButtonElement : HTMLElement
+
 function init() {
     debugElement = document.getElementById('debug') as HTMLDivElement
+
+    gameContainerElement = document.getElementById('game-container') as HTMLElement
 
     svgHiddenLayerElement = document.getElementById('svg-hidden-layer') as HTMLElement
 
     audioThemeElement = document.getElementById('audio-theme') as HTMLAudioElement
     audioThemeToggleElement = document.getElementById('svg-music-note') as HTMLElement
-    audioThemeCross = document.getElementById('svg-music-note-cross') as HTMLElement
-
-    svgFrame = document.getElementById('svg-frame') as HTMLElement
+    audioThemeCrossElement = document.getElementById('svg-music-note-cross') as HTMLElement
 
     joinButtonElement = document.getElementById('svg-join-button') as HTMLElement
+
+    inputContainerElement = document.getElementById('input-container') as HTMLElement
+    input = document.getElementById('input') as HTMLElement
+    inputCloseButtonElement = document.getElementById('input-close-button')
+    inputSubmitButtonElement = document.getElementById('input-submit-button')
 }
 
 function addAudioThemeToggleEvent() {
     function handleClick() {
         if (!isAudioThemeDisabled) {
-            audioThemeCross.style.removeProperty('display') // show
+            audioThemeCrossElement.style.removeProperty('display') // show
             isAudioThemeDisabled = true
             audioThemeElement.play()
         } else {
-            audioThemeCross.style.display = 'none'
+            audioThemeCrossElement.style.display = 'none'
             isAudioThemeDisabled = false
             audioThemeElement.pause()
         }  
@@ -45,45 +53,36 @@ function addAudioThemeToggleEvent() {
     audioThemeToggleElement.addEventListener('click', _ => {
         handleClick()
     })
-    audioThemeCross.addEventListener('click', _ => {
+    audioThemeCrossElement.addEventListener('click', _ => {
         handleClick()
     })
 } 
 
 function addJoinEvent() {
     joinButtonElement.addEventListener('click', async _ => {
-        svgFrame.style.visibility = 'visible'
-        // svgFrame.classList.add('effect')
-        // svgFrame.style.transform = 'translateX(-287px)'
-        await delay(10)
-        let x = svgFrame.getAttribute('width')
-        let y = svgFrame.getAttribute('height')
-        svgFrame.setAttribute('width', originalFrameWidth)
-        svgFrame.setAttribute('height', originalFrameHeight)
-        console.log('Join')
+        inputContainerElement.style.top = "10px"
+        gameContainerElement.style.opacity = "0.1"
+    })
+}
+
+function addCloseAndSubmitInputButtonEvent() {
+    inputCloseButtonElement.addEventListener('click', _ => {
+        gameContainerElement.style.opacity = '1'
+        inputContainerElement.style.display = 'flex'
+        inputContainerElement.style.top = '-200px'
+    })
+    inputSubmitButtonElement.addEventListener('click', _=> {
+        
     })
 }
 
 async function setup() {
-    // svgHiddenLayerElement.style.display = 'none'
-    audioThemeCross.style.display = 'none'
-    svgFrame.style.visibility = 'hidden'
-    originalFrameWidth = svgFrame.getAttribute('width')
-    originalFrameHeight = svgFrame.getAttribute('height')
-    svgFrame.setAttribute('width', '0')
-    svgFrame.setAttribute('height', '0')
+    svgHiddenLayerElement.style.display = 'none'
+    audioThemeCrossElement.style.display = 'none'
 
     addAudioThemeToggleEvent()
     addJoinEvent()
-
-    let x = document.getElementById('svg-input-wrapper')
-    let y = document.getElementById('input-name-frame')
-    console.log(x)
-    console.log(y.children)
-    for (let i = 0; i < y.children.length; i++) {
-        console.log(i)
-        x.appendChild(y.children[i])
-    }
+    addCloseAndSubmitInputButtonEvent()
 
     // let autoPlayCheck = audioThemeElement.play()
     // if (autoPlayCheck !== undefined) {
@@ -98,8 +97,5 @@ async function setup() {
 window.addEventListener("DOMContentLoaded", function() {
     init()
     setup()
-    // setInterval(() => {
-    //     loop()
-    // }, 10)
 })
 

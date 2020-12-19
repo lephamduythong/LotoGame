@@ -14,7 +14,7 @@ body {
     color: white;
 }
 
-.container {
+#game-container {
     display: flex;
     width: 100vw;
     height: 100vh;
@@ -22,9 +22,9 @@ body {
     align-items: center;
 }
 
-#svg-game-container {
-    width: 100vw !important;
-    height: 100vh !important;
+#svg-game {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 #svg-music-note, #svg-music-note-cross {
@@ -37,21 +37,59 @@ body {
     transition-duration: 0.2s;
 }
 
-.input-container {
+#input-container {
+    display: flex;
+    position: absolute;
+    width: 100vw;
+    justify-content: center;
+    top: -200px;
+    transition-property: top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+}
+
+.input-wrapper {
+    display: inline-block;
+    width: 200px;
+}
+
+.input-wrapper > input, svg {
     position: relative;
 }
 
-.input-container > input, svg {
-    position: absolute;
+.input-wrapper > svg {
+    left: -50px;
+    top: -15px;
 }
 
-.input-container > input {
-    top: 40px;
-    left: 55px;
+.input-wrapper > input {
     outline: none;
     background: none;
     color: white;
     resize: none;
     border: none;
+    top: 45px;
+    left: 35px;
+    z-index: 10;
+    width: 125px;
+}
+
+.input-label {
+    position: relative;
+    left: 10px;
+    top: 20px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#input-close-button {
+    position: relative;
+    top: -20px;
+    z-index: 10;
+}
+
+#input-submit-button {
+    position: relative;
+    top: -20px;
     z-index: 10;
 }

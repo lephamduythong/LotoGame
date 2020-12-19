@@ -16,29 +16,20 @@
     <source src="/assets/theme.mp3">
   </audio>
 
-  <!-- <div id="input-name-frame" style="display: none;">
-    <div class="input-container">
-      <input type="text" />
+  <div id="input-container">
+    <div class="input-wrapper">
+      <div class="input-label">Hãy chọn một tên</div>
+      <input id="input" type="text" />
       <svg width="300" height="100" version="1.1" viewBox="-250 75 200 100">
         <use xlink:href="#svg-input"></use>
       </svg>
+      <button id="input-close-button">Đóng</button>
+      <button id="input-submit-button">OK</button>
     </div>
-    <div class="input-container">
-      <input type="text" />
-      <svg width="300" height="100" version="1.1" viewBox="-250 75 200 100">
-        <use xlink:href="#svg-input"></use>
-      </svg>
-    </div>
-    <div class="input-container">
-      <input type="text" />
-      <svg width="300" height="100" version="1.1" viewBox="-250 75 200 100">
-        <use xlink:href="#svg-input"></use>
-      </svg>
-    </div>
-  </div> -->
+  </div>
 
-  <div class="container">
-    <svg id="svg-game-container" width="1080" height="1920" version="1.1" viewBox="0 0 285.75 508.09" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <div id="game-container">
+    <svg id="svg-game" width="1080" height="1920" version="1.1" viewBox="0 0 285.75 508.09" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <style id="style993"/>
       <defs id="defs1499">
        <linearGradient id="a">
@@ -100,18 +91,8 @@
        <rect id="svg-frame" x="317.5" y="50.7" width="228.6" height="406.4" style="fill-rule:evenodd;fill:#583d72;opacity:.9;stroke-dashoffset:62.438;stroke-width:.25576"/>
        <path id="svg-input" d="m-181.49 106.37c-5.6371-2.7944-12.167-2.9777-17.949-0.66478-2.2206 0.88824-8.9986-0.23399-10.637 0-1.1813 0.16876-2.1662 1.0401-3.3239 1.3296-1.2799 0.31997-3.4793-0.58709-4.6535 0-1.4699 0.73493-0.2063 0.41259-0.66479 1.3296-0.22159 0.44319-1.1729 0.19471-1.3296 0.66479-0.21022 0.63067 0.13038 1.3425 0 1.9944-0.46333 2.3166-2.2453 4.1648-2.6591 6.6478-0.41759 2.5055-0.51975 14.8 0 16.62 0.27225 0.95287 0.96152 1.739 1.3296 2.6591 0.91886 2.2971-0.58981 4.8034 0.66479 7.3126 0.25938 0.51876 3.89 3.9448 3.9887 3.9887 1.7186 0.76382 20.31 1.6505 23.267 0.66478 0.2973-0.0991 0.35749-0.60332 0.66479-0.66478 2.1101-0.42202 5.1572 0 7.3126 0h19.944 34.569 31.245c1.0753 0 19.232 0.0471 19.279 0 0.35037-0.35037 0.31441-0.97919 0.66478-1.3296 0.56496-0.56495 1.4952-0.70567 1.9944-1.3296 0.43775-0.54719 0.27608-1.4113 0.66478-1.9944 0.12292-0.18437 0.59471 0.21023 0.66478 0 0.21022-0.63066-0.34203-1.4243 0-1.9944 0.81124-1.3521 3.3833-2.1726 3.9887-3.9887 1.2363-3.7089-0.57383-8.2503 0.66478-11.966 0.37736-1.1321 1.0017-2.1765 1.3296-3.3239 0.52211-1.8274-0.85395-4.9399 0-6.6478 0.53672-1.0735 1.0505-1.1162 0.66478-2.6591-0.79618-3.1847-3.1912-6.7809-5.9831-8.6422-1.6594-1.1063-3.9986 0.19845-5.9831 0-2.6824-0.26824-5.3052-0.97328-7.9774-1.3296-5.1086-0.68115-10.767 0-15.955 0h-66.478c-5.7179 0-4.8807-1.1024-9.307 3.3239z" style="fill:none;stroke-width:1.3232;stroke:#fff"/>
       </g>
-      <foreignObject id="svg-input-wrapper" x="50" y="50" width="200" height="100"/>
      </svg>
   </div>
-
-    <div id="input-name-frame" style="display: none;">
-      <div class="input-container">
-        <input type="text" />
-        <svg width="300" height="100" version="1.1" viewBox="-200 75 200 100">
-          <use xlink:href="#svg-input"></use>
-        </svg>
-      </div>
-    </div>
 
   <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
 </body>
