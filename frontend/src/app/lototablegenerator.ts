@@ -1,8 +1,4 @@
 export function getLotoTableArray() {
-    function getRndInteger(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min)) + min
-    }
-    
     function shuffleArray(array: number[]) {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1))
