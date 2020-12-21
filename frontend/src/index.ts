@@ -1,12 +1,13 @@
 import './styles/style.scss';
-import { delay, randomInt, getPosition } from './app/ulti'
+import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
-import { compile } from "handlebars";
+import { compile as handlebarsCompile } from "handlebars";
 
-let template = compile(`<p class="{{hihi}}">CẶC</p>`)
+let template = handlebarsCompile(`<p class="{{hihi}}">CẶC</p>`)
 let data = { hihi: 'shit' }
 let result = template(data)
 console.log(result)
+console.log(parseStringToDOM(result))
 
 let debugElement : HTMLDivElement
 

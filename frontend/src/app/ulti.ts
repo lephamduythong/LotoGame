@@ -20,6 +20,10 @@ export enum GetPositionType {
     BottomRight
 }
 
+export function parseStringToDOM(str: string) {
+    return new DOMParser().parseFromString(str, 'text/html').body.firstChild;
+}
+
 export function getPosition(element: HTMLElement, position: string) {
     const { top, left, width, height } = element.getBoundingClientRect();
     let point;
