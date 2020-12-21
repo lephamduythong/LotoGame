@@ -2,3 +2,7 @@
 
 @import 'modules/variables';
 @import 'modules/base';
+
+body { 
+    background-color: $primary-color;
+}
