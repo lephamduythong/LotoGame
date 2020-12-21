@@ -1,6 +1,12 @@
 import './styles/style.scss';
 import { delay, randomInt, getPosition } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
+import { compile } from "handlebars";
+
+let template = compile(`<p class="{{hihi}}">CẶC</p>`)
+let data = { hihi: 'shit' }
+let result = template(data)
+console.log(result)
 
 let debugElement : HTMLDivElement
 
