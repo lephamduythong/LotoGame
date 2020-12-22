@@ -3,12 +3,6 @@ import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
 import { compile as handlebarsCompile } from "handlebars";
 
-let template = handlebarsCompile(`<p class="{{hihi}}">CẶC</p>`)
-let data = { hihi: 'shit' }
-let result = template(data)
-console.log(result)
-console.log(parseStringToDOM(result))
-
 let debugElement : HTMLDivElement
 
 let gameContainerElement : HTMLElement
@@ -23,7 +17,7 @@ let isAudioThemeDisabled : boolean = false
 let joinButtonElement : HTMLElement
 
 let inputContainerElement : HTMLElement
-let input : HTMLElement
+let inputElement : HTMLInputElement
 let inputCloseButtonElement : HTMLElement
 let inputSubmitButtonElement : HTMLElement
 let inputValidationElement : HTMLElement
@@ -33,16 +27,15 @@ let loadingContainerElement : HTMLElement
 let startButton : HTMLButtonElement
 
 let lotoTableContainerElement : HTMLElement
+let playingContainerElement : HTMLElement
+let randomedLotoArrayTable: number[][]
+let markedLotoArrayTable: number[][] = []
+let markedContainerElement : HTMLElement
+let svgCellGroupElement : HTMLElement
+
+let resultContainer : HTMLElement
 
 let clickSound : HTMLAudioElement = new Audio('/assets/click.wav')
-
-let playingContainerElement : HTMLElement
-
-let randomedLotoArrayTable: number[][]
-// let markedLotoArrayTable: number[][] = new Array(9)
-let markedLotoArrayTable: number[][] = []
-
-let markedContainerElement : HTMLElement
 
 function init() {
     for (let i = 0; i < 9; i++) {
@@ -68,7 +61,7 @@ function init() {
 
     joinButtonElement = document.getElementById('svg-join-button')
 
-    input = document.getElementById('input')
+    inputElement = document.getElementById('input') as HTMLInputElement
     inputContainerElement = document.getElementById('input-container')
     inputCloseButtonElement = document.getElementById('input-close-button')
     inputSubmitButtonElement = document.getElementById('input-submit-button')
@@ -84,6 +77,10 @@ function init() {
     playingContainerElement = document.getElementById('playing-container')
 
     markedContainerElement = document.getElementById('marked-container')
+
+    svgCellGroupElement = document.getElementById('svg-cell-group')
+
+    resultContainer = document.getElementById('result-container')
 }
 
 function addAudioThemeToggleEvent() {
@@ -122,7 +119,7 @@ function addCloseAndSubmitInputButtonEvent() {
     })
     inputSubmitButtonElement.addEventListener('click', _=> {
         // Validate user's name
-        let name = (document.getElementById('input') as HTMLInputElement).value
+        let name = inputElement.value
         if (!name || name === '') {
             inputValidationElement.innerText = "Không được bỏ trống"
             return
@@ -144,9 +141,7 @@ function addStartGameEvent() {
         playingContainerElement.style.transform = "scale(1)"
         await delay(10)
 
-        randomedLotoArrayTable = getLotoTableArray()
-        let svgCellGroupElement = document.getElementById('svg-cell-group')
-        let lotoTableContainerElement = document.getElementById('loto-table-container')
+        randomedLotoArrayTable = getLotoTableArray() // This table is not transposed
 
         for (let i = 0; i < 9; i++) {
             let newPlayingTableRowElement = document.createElement('div')
@@ -185,21 +180,16 @@ function addStartGameEvent() {
             }
         }
 
-        let childrenOfPlayingContainerElement = document.getElementById('loto-table-container').children
+        let childrenOfPlayingContainerElement = lotoTableContainerElement.children
         let svgCellMarkedElement = document.getElementById('svg-cell-marked')
         for (let i = 0; i < 9; i++) {
             let childrenOfPlayingTableRowElement = childrenOfPlayingContainerElement[i].children
             for (let j = 0; j < 9; j++) {
                 childrenOfPlayingTableRowElement[j].addEventListener('click', _ => {
                     if (randomedLotoArrayTable[j][i] != -1) {
-                        
                         let el = document.getElementById('svg-cell-' + i + '-' + j)
-                        // console.log(getPositionOfElement(document.getElementById('svg-cell-' + i + '-' + j)))
-                        // console.log(document.getElementById('svg-cell-' + i + '-' + j).getBoundingClientRect())
-                        
-                        console.log(getPosition(el, 'top left'))
-
                         clickSound.play()
+                        
                         // Mark
                         let newSVGMarkElement = document.createElement('svg')
                         newSVGMarkElement.setAttribute('width', '37px')
@@ -210,9 +200,7 @@ function addStartGameEvent() {
                         newSVGMarkElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
                         newSVGMarkElement.innerHTML += svgCellMarkedElement.outerHTML
                         newSVGMarkElement.children[0].removeAttribute('id')
-                        // console.log(newSVGMarkElement)
                         markedContainerElement.innerHTML += newSVGMarkElement.outerHTML
-                        console.log(i + '-' + j)
                         markedLotoArrayTable[i][j] = 1
 
                         // Check win ?
@@ -258,26 +246,11 @@ function setup() {
     addCloseAndSubmitInputButtonEvent()
     addStartGameEvent()
 
-    document.getElementById('win-trigger').addEventListener('click', _ => {
-        playingContainerElement.style.display = 'none'
-        markedContainerElement.style.display = 'none'
-        document.getElementById('result-container').style.display = 'flex'
-    })
-
     document.getElementById('playing-exit-button').addEventListener('click', _ => {
         playingContainerElement.style.display = 'none'
         markedContainerElement.style.display = 'none'
         document.getElementById('result-container').style.display = 'flex'
     })
-    
-    // let autoPlayCheck = audioThemeElement.play()
-    // if (autoPlayCheck !== undefined) {
-    //     autoPlayCheck.then(_ => {
-    //         console.log('started')
-    //     }).catch(error => {
-    //         debugElement.innerText += 'autoplay prevented '
-    //     });
-    // }
 }
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -285,3 +258,11 @@ window.addEventListener("DOMContentLoaded", function() {
     setup()
 })
 
+// let autoPlayCheck = audioThemeElement.play()
+// if (autoPlayCheck !== undefined) {
+//     autoPlayCheck.then(_ => {
+//         console.log('started')
+//     }).catch(error => {
+//         debugElement.innerText += 'autoplay prevented '
+//     });
+// }
