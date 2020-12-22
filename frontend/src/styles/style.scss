@@ -26,14 +26,12 @@ body {
     height: 100% !important;
 }
 
-#svg-music-note, #svg-music-note-cross {
+#svg-join-button {
     cursor: pointer;
 }
 
-#svg-frame {
-    transform: translateX(-287px);
-    transition-property: width, height;
-    transition-duration: 0.2s;
+#svg-music-note, #svg-music-note-cross {
+    cursor: pointer;
 }
 
 #loading-container {
