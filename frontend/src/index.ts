@@ -32,6 +32,7 @@ let randomedLotoArrayTable: number[][]
 let markedLotoArrayTable: number[][] = []
 let markedContainerElement : HTMLElement
 let svgCellGroupElement : HTMLElement
+let lotoTableFirstColumnRange : number[]
 
 let resultContainer : HTMLElement
 
@@ -48,6 +49,11 @@ function init() {
     // Error code below ?!
     // markedLotoArrayTable.fill((new Array(9).fill(0)))
     // console.log(markedLotoArrayTable)
+
+    lotoTableFirstColumnRange = new Array(9)
+    for (let i = 1; i <= 9; i++) {
+        lotoTableFirstColumnRange[i - 1] = i
+    }
 
     debugElement = document.getElementById('debug') as HTMLDivElement
 
@@ -148,9 +154,11 @@ function addStartGameEvent() {
             newPlayingTableRowElement.classList.add('playing-table-row')
             for (let j = 0; j < 9; j++) {
                 let newSVGCellGroupElement = document.createElement('svg')
+                let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
                 newSVGCellGroupElement.setAttribute('width', '37px')
                 newSVGCellGroupElement.setAttribute('height', '60px')
-                newSVGCellGroupElement.setAttribute('viewBox', '-450 250 75 153')
+                // newSVGCellGroupElement.setAttribute('viewBox', `-450 250 75 153`)
+                newSVGCellGroupElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -470 : -445} 250 75 153`)
                 if (randomedLotoArrayTable[j][i] != -1) {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
                 }
@@ -191,10 +199,11 @@ function addStartGameEvent() {
                         clickSound.play()
                         
                         // Mark
+                        let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
                         let newSVGMarkElement = document.createElement('svg')
                         newSVGMarkElement.setAttribute('width', '37px')
                         newSVGMarkElement.setAttribute('height', '80px')
-                        newSVGMarkElement.setAttribute('viewBox', '-450 450 169 233')
+                        newSVGMarkElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -450 : -490} 450 169 233`)
                         newSVGMarkElement.setAttribute('style', `position: absolute; z-index: 10; left: ${getPosition(el, 'top left').x}; top: ${getPosition(el, 'top left').y}`)
                         newSVGMarkElement.setAttribute('version', '1.1')
                         newSVGMarkElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
@@ -234,7 +243,7 @@ function addStartGameEvent() {
 function win() {
     playingContainerElement.style.display = 'none'
     markedContainerElement.style.display = 'none'
-    document.getElementById('result-container').style.display = 'flex'
+    resultContainer.style.display = 'flex'
 }
 
 function setup() {
