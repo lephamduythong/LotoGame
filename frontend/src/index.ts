@@ -1,15 +1,18 @@
 import './styles/style.scss';
+import './styles/constant.scss'
 import { compile, registerHelper, registerPartial, escapeExpression, SafeString } from 'handlebars'
+
+console.log(window.getComputedStyle(document.body).getPropertyValue('----myCustomVariable'))
 
 // 1. Expression
 // 1.1 Basic
-// let template1 = compile(`<p>{{text1}} - {{text2}}</p>`)
-// let data1 = {
+// let template = compile(`<p>{{text1}} - {{text2}}</p>`)
+// let data = {
 //     text1: 'a',
 //     text2: 'b'
 // }
-// let result1 = template1(data1) 
-// console.log(result1)
+// let result1 = template(data) 
+// console.log(result)
 
 // 1.2 Path expression "/"
 // let template = compile(`<p>{{obj1/a}} - {{obj1/b}}</p>`)
@@ -139,6 +142,7 @@ registerHelper("peepeebooboo", function (num, isTrueFalse, wtf, str) {
 let result = template(data) */
 
 // 1.6.5 Helpers with Hash arguments
+// {{link "See Website" href=person.url class="person"}}
 // https://handlebarsjs.com/examples/helper-hash-arguments.html
 
 // 1.6.6 Disambiguating helpers calls and property lookup
@@ -171,10 +175,146 @@ let result = template(data)
 console.log(result) */
 
 // 1.8 Whitespace Control
+// Gỡ bỏ các khoảng trắng bên trong chuỗi dc template
+// 1.7 Subexpressions
+/* let templateOld = compile(`
+    {{#each nav}}
+    <a href="{{url}}">
+    {{#if test}}
+        {{title}}
+    {{^}}
+        Empty
+    {{/if}}
+    </a>
+    {{~/each}}
+`)
+let templateNew = compile(`
+    {{#each nav ~}}
+    <a href="{{url}}">
+    {{~#if test}}
+        {{~title}}
+    {{~^~}}
+        Empty
+    {{~/if~}}
+    </a>
+    {{~/each}}
+`)
+let data = {
+    nav: [
+        { url: "foo", test: true, title: "bar" },
+        { url: "bar" }
+    ]
+}
+let resultOld = templateOld(data)
+let resultNew = templateNew(data)
+console.log(resultOld)
+console.log(resultNew)
+document.getElementById('debug1').innerHTML += resultOld
+document.getElementById('debug2').innerHTML += resultNew */
 
-// Partials
+// 1.9 Escaping Handlebars expressions
+/* let template = compile(`
+    \{{escaped}}
+    {{{{raw}}}}
+        {{escaped}}
+    {{{{/raw}}}}
+`)
+let data = {
+    escaped: 1
+}
+let result = template(data) 
+console.log(result) */
 
-// Block helpers
+// 2.Partials
+// Định nghĩa một template mẫu và có thể tái sử dụng (reuse) template
+// 2.1 Basic
+/* registerPartial('myPartial', '{{prefix}}')
+registerPartial('myPartial2', '{{prefix2}}')
+let template = compile(`{{> myPartial}} -- {{> myPartial2}} -- {{> myPartial}}`)
+let data = {
+    prefix: 'Hello',
+    prefix2: 'Hello 2'
+}
+let result = template(data) 
+console.log(result) */
+
+
+// 2.2 Dynamic Partials
+/* registerPartial('dynamicPartial', '{{prefix}}')
+registerHelper('whichPartial', function(context) { return context });
+let template = compile(`{{> (whichPartial "dynamicPartial") }}`)
+let data = {
+    prefix: 'Hahaha'
+}
+let result = template(data) 
+console.log(result) */
+
+// 2.3 Partial Contexts
+/* registerPartial('myPartial', '{{information}}')
+let template = compile(`{{> myPartial myOtherContext }}`)
+let data = {
+    myOtherContext: {
+        information: "Interesting!",
+    },
+}
+let result = template(data)
+console.log(result) */
+
+// 2.4 Partial Parameters **
+/* registerPartial('myPartial', 'The result is {{parameter}}')
+let template = compile(`{{> myPartial parameter=favoriteNumber }}`)
+let data = {
+    favoriteNumber: 113
+}
+let result = template(data)
+console.log(result) */
+
+// 2.5 Partial Blocks
+// Case 1: Sử dụng nếu partial đó chưa dc register
+/* let template = compile(`
+    {{#>myPartial}}
+        Failover content 
+    {{/myPartial}}
+`)
+let data = {
+    x: 123
+}
+let result = template(data)
+console.log(result) */
+
+// Case 2: @partial-block, pass ngược patial block trong main template vào partial
+/* registerPartial('myPartial', 'Site Content {{> @partial-block }} -- {{x}}')
+let template = compile(`
+    {{#>myPartial}}
+        Hahahaha
+    {{/myPartial}}
+`)
+let data = {
+    x: 123
+}
+let result = template(data)
+console.log(result) */
+
+// 2.6 Inline Partials
+// Sử dụng "*inline" decorator để define partial ngay trong template, khỏi register
+/* let template = compile(`
+    {{#*inline "myPartial"}}
+        My Content
+    {{/inline}}
+    
+    {{#each shit}}
+        {{> myPartial}}
+    {{/each}}
+`)
+let data = {
+    shit: [1, 2]
+}
+let result = template(data)
+console.log(result) */
+
+// 3 Block helpers
+// 3.1 Basic 
+
 
 // Built-in helpers
 

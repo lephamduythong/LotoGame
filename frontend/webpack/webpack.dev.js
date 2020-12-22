@@ -34,26 +34,23 @@ module.exports = {
       test: selectedPreprocessor.fileRegexp,
       use: [{
           loader: MiniCssExtractPlugin.loader
-        },
-        {
+        }, {
           loader: 'css-loader',
           options: {
             modules: false,
             sourceMap: true
           }
-        },
-        {
+        }, {
           loader: 'postcss-loader',
           options: {
             sourceMap: true
           }
-        },
-        {
+        }, {
           loader: selectedPreprocessor.loaderName,
           options: {
             sourceMap: true
           }
-        },
+        }
       ]
     }]
   },

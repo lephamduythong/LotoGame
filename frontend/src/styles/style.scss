@@ -3,6 +3,12 @@
 @import 'modules/variables';
 @import 'modules/base';
 
+$white-color: #fcf5ed;
+
 body { 
     background-color: $primary-color;
+}
+
+:export {
+    whiteColor: $white-color;
 }
