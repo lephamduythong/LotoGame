@@ -8,18 +8,6 @@ export function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export enum GetPositionType {
-    TopLeft,
-    TopCenter,
-    TopRight,
-    CenterLeft,
-    Center,
-    CenterRight,
-    BottomLeft,
-    BottomCenter,
-    BottomRight
-}
-
 export function parseStringToDOM(str: string) {
     return new DOMParser().parseFromString(str, 'text/html').body.firstChild;
 }

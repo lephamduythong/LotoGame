@@ -54,16 +54,11 @@ export function getLotoTableArray() {
                 countColArray.push(count)
             }
     
-            // console.log(countColArray)
-    
             for (let j = 0; j < 9; j++) {
-                // console.log('j: ' + j)
-    
                 if (countColArray[j] > 5) {
                     isDone = false
                     // Find col < 5 to move to
                     for (let i = j + 1; i < 9; i++) {
-                        // console.log('   i: ' + i)
                         if (countColArray[i] < 5) {
                             // Find prober row to swap
                             for (let k = 0; k < 9; k++) {

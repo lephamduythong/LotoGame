@@ -1,8 +1,8 @@
 import * as signalR from "@microsoft/signalr"
-import { Constant } from './const'
+import * as ConfigConst from './const/config'
 
 export var connection = new signalR.HubConnectionBuilder()
-    .withUrl(Constant.Config.HOST_URL)
+    .withUrl(ConfigConst.HOST_URL)
     .build();
 
 export function startConnection() {

@@ -1,44 +1,42 @@
 import './styles/style.scss';
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
-import { compile as handlebarsCompile } from "handlebars";
+import * as HTML_ELEMENT_CONST from './app/const/htmlelementid'
+import * as OTHER_CONST from './app/const/other'
+import * as AUDIO_PATH_CONST from './app/const/audiopath'
 
+// Variables definition
 let debugElement : HTMLDivElement
-
 let gameContainerElement : HTMLElement
-
 let svgHiddenLayerElement : HTMLElement
-
 let audioThemeElement : HTMLAudioElement
 let audioThemeToggleElement : HTMLElement, 
     audioThemeCrossElement : HTMLElement
-let isAudioThemeDisabled : boolean = false
-
+let isAudioThemeDisabled : boolean
 let joinButtonElement : HTMLElement
-
-let inputContainerElement : HTMLElement
-let inputElement : HTMLInputElement
-let inputCloseButtonElement : HTMLElement
-let inputSubmitButtonElement : HTMLElement
-let inputValidationElement : HTMLElement
-
-let loadingContainerParentElement : HTMLElement
-let loadingContainerElement : HTMLElement
-let startButton : HTMLButtonElement
-
-let lotoTableContainerElement : HTMLElement
-let playingContainerElement : HTMLElement
-let randomedLotoArrayTable: number[][]
-let markedLotoArrayTable: number[][] = []
-let markedContainerElement : HTMLElement
-let svgCellGroupElement : HTMLElement
-let lotoTableFirstColumnRange : number[]
-
+let inputContainerElement : HTMLElement,
+    inputElement : HTMLInputElement,
+    inputCloseButtonElement : HTMLElement,
+    inputSubmitButtonElement : HTMLElement,
+    inputValidationElement : HTMLElement
+let loadingContainerParentElement : HTMLElement,
+    loadingContainerElement : HTMLElement,
+    startButtonElement : HTMLButtonElement
+let lotoTableContainerElement : HTMLElement,
+    playingContainerElement : HTMLElement,
+    randomedLotoArrayTable: number[][],
+    markedLotoArrayTable: number[][],
+    markedContainerElement : HTMLElement,
+    svgCellGroupElement : HTMLElement,
+    lotoTableFirstColumnRange : number[]
 let resultContainer : HTMLElement
-
-let clickSound : HTMLAudioElement = new Audio('/assets/click.wav')
+let clickSound : HTMLAudioElement
 
 function init() {
+    markedLotoArrayTable = []
+    isAudioThemeDisabled = false
+    clickSound = new Audio(AUDIO_PATH_CONST.CLICK)
+    
     for (let i = 0; i < 9; i++) {
         let temp: number[] = []
         for (let j = 0; j < 9; j++) {
@@ -46,47 +44,32 @@ function init() {
         }
         markedLotoArrayTable.push(temp)
     }
-    // Error code below ?!
-    // markedLotoArrayTable.fill((new Array(9).fill(0)))
-    // console.log(markedLotoArrayTable)
 
     lotoTableFirstColumnRange = new Array(9)
     for (let i = 1; i <= 9; i++) {
         lotoTableFirstColumnRange[i - 1] = i
     }
 
-    debugElement = document.getElementById('debug') as HTMLDivElement
-
-    gameContainerElement = document.getElementById('game-container')
-
-    svgHiddenLayerElement = document.getElementById('svg-hidden-layer')
-
-    audioThemeElement = document.getElementById('audio-theme') as HTMLAudioElement
-    audioThemeToggleElement = document.getElementById('svg-music-note')
-    audioThemeCrossElement = document.getElementById('svg-music-note-cross')
-
-    joinButtonElement = document.getElementById('svg-join-button')
-
+    debugElement = document.getElementById(HTML_ELEMENT_CONST.DEBUG) as HTMLDivElement
+    gameContainerElement = document.getElementById(HTML_ELEMENT_CONST.GAME_CONTAINER)
+    svgHiddenLayerElement = document.getElementById(HTML_ELEMENT_CONST.SVG_HIDDEN_LAYER)
+    audioThemeElement = document.getElementById(HTML_ELEMENT_CONST.AUDIO_THEME) as HTMLAudioElement
+    audioThemeToggleElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE)
+    audioThemeCrossElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE_CROSS)
+    joinButtonElement = document.getElementById(HTML_ELEMENT_CONST.SVG_JOIN_BUTTON)
     inputElement = document.getElementById('input') as HTMLInputElement
-    inputContainerElement = document.getElementById('input-container')
-    inputCloseButtonElement = document.getElementById('input-close-button')
-    inputSubmitButtonElement = document.getElementById('input-submit-button')
-    inputValidationElement = document.getElementById('input-validation')
-
-    loadingContainerParentElement = document.getElementById('loading-container-parent')
-    loadingContainerElement = document.getElementById('loading-container')
-
-    lotoTableContainerElement = document.getElementById('loto-table-container')
-
-    startButton = document.getElementById('start-button') as HTMLButtonElement
-
-    playingContainerElement = document.getElementById('playing-container')
-
-    markedContainerElement = document.getElementById('marked-container')
-
-    svgCellGroupElement = document.getElementById('svg-cell-group')
-
-    resultContainer = document.getElementById('result-container')
+    inputContainerElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_CONTAINER)
+    inputCloseButtonElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_CLOSE_BUTTON)
+    inputSubmitButtonElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_SUBMIT_BUTTON)
+    inputValidationElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_VALIDATION)
+    loadingContainerParentElement = document.getElementById(HTML_ELEMENT_CONST.LOADING_CONTAINER_PARENT)
+    loadingContainerElement = document.getElementById(HTML_ELEMENT_CONST.LOADING_CONTAINER)
+    lotoTableContainerElement = document.getElementById(HTML_ELEMENT_CONST.LOTO_TABLE_CONTAINER)
+    startButtonElement = document.getElementById(HTML_ELEMENT_CONST.START_BUTTON) as HTMLButtonElement
+    playingContainerElement = document.getElementById(HTML_ELEMENT_CONST.PLAYING_CONTAINER)
+    markedContainerElement = document.getElementById(HTML_ELEMENT_CONST.MARKED_CONTAINER)
+    svgCellGroupElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_GROUP)
+    resultContainer = document.getElementById(HTML_ELEMENT_CONST.RESULT_CONTAINER)
 }
 
 function addAudioThemeToggleEvent() {
@@ -137,18 +120,16 @@ function addCloseAndSubmitInputButtonEvent() {
 }
 
 function addStartGameEvent() {
-    startButton.addEventListener('click', async _ => {
+    startButtonElement.addEventListener('click', async _ => {
         loadingContainerParentElement.style.display = "none"
         playingContainerElement.style.display = "grid"
         await delay(10)
-        // playingContainerElement.style.transform = "scale(1)"
         playingContainerElement.style.opacity = "1"
         await delay(10)
         playingContainerElement.style.transform = "scale(1)"
         await delay(10)
-
+        
         randomedLotoArrayTable = getLotoTableArray() // This table is not transposed
-
         for (let i = 0; i < 9; i++) {
             let newPlayingTableRowElement = document.createElement('div')
             newPlayingTableRowElement.classList.add('playing-table-row')
@@ -157,7 +138,6 @@ function addStartGameEvent() {
                 let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
                 newSVGCellGroupElement.setAttribute('width', '37px')
                 newSVGCellGroupElement.setAttribute('height', '60px')
-                // newSVGCellGroupElement.setAttribute('viewBox', `-450 250 75 153`)
                 newSVGCellGroupElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -470 : -445} 250 75 153`)
                 if (randomedLotoArrayTable[j][i] != -1) {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
@@ -172,8 +152,7 @@ function addStartGameEvent() {
             lotoTableContainerElement.innerHTML += newPlayingTableRowElement.outerHTML
         }
     
-        let colors = ['34BDF2', 'F15C2B', 'F4D226', '66C165', '643B4B']
-        let pickedColor = "#" + colors[randomInt(0, colors.length - 1)]
+        let pickedColor = "#" + OTHER_CONST.RANDOM_CELL_COLORS[randomInt(0, OTHER_CONST.RANDOM_CELL_COLORS.length - 1)]
         for (let i = 0; i < 9; i++) {
             let tempArray: string[] = []
             for (let j = 0; j < 9; j++) {
@@ -254,24 +233,9 @@ function setup() {
     addJoinEvent()
     addCloseAndSubmitInputButtonEvent()
     addStartGameEvent()
-
-    document.getElementById('playing-exit-button').addEventListener('click', _ => {
-        playingContainerElement.style.display = 'none'
-        markedContainerElement.style.display = 'none'
-        document.getElementById('result-container').style.display = 'flex'
-    })
 }
 
 window.addEventListener("DOMContentLoaded", function() {
     init()
     setup()
 })
-
-// let autoPlayCheck = audioThemeElement.play()
-// if (autoPlayCheck !== undefined) {
-//     autoPlayCheck.then(_ => {
-//         console.log('started')
-//     }).catch(error => {
-//         debugElement.innerText += 'autoplay prevented '
-//     });
-// }

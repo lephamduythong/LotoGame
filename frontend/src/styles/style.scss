@@ -1,8 +1,5 @@
 @import '/node_modules/normalize.css/normalize.css';
 
-@import 'modules/variables';
-@import 'modules/base';
-
 @import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
 
 * {
@@ -180,13 +177,6 @@ body {
     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
     text-align:center;
     background-color:#9a4ef1
-    // #f14e4e : red
-    // #f1bb4e : yellow
-    // #84f14e : green
-    // #4ef18f : light green
-    // #4e9af1 : blue
-    // #9a4ef1 : purple
-    // #f14ebd : pink
 }
 
 /* 
@@ -239,8 +229,6 @@ body {
 
 @media (min-width: 481px) and (max-width: 767px) {
 
-/* CSS */
-
 }
 
 /* 
@@ -249,7 +237,5 @@ body {
 */
 
 @media (min-width: 320px) and (max-width: 480px) {
-
-/* CSS */
 
 }
