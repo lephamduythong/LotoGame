@@ -94,28 +94,9 @@ function addAudioThemeToggleEvent() {
 
 function addJoinEvent() {
     joinButtonElement.addEventListener('click', async _ => {
-        inputContainerElement.style.top = '10px'
-        gameContainerElement.style.opacity = '0.1'
-        inputValidationElement.innerText = ''
-    })
-}
-
-function addCloseAndSubmitInputButtonEvent() {
-    inputCloseButtonElement.addEventListener('click', _ => {
-        gameContainerElement.style.opacity = '1'
-        inputContainerElement.style.display = 'flex'
-        inputContainerElement.style.top = '-200px'
-    })
-    inputSubmitButtonElement.addEventListener('click', _=> {
-        // Validate user's name
-        let name = inputElement.value
-        if (!name || name === '') {
-            inputValidationElement.innerText = "Không được bỏ trống"
-            return
-        }
-        inputContainerElement.style.display = 'none'
+        await delay(50)
+        startButtonElement.click()
         gameContainerElement.style.display = 'none'
-        loadingContainerParentElement.style.display = 'flex'
     })
 }
 
@@ -231,7 +212,6 @@ function setup() {
 
     addAudioThemeToggleEvent()
     addJoinEvent()
-    addCloseAndSubmitInputButtonEvent()
     addStartGameEvent()
 }
 
