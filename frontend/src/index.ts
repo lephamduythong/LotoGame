@@ -164,7 +164,7 @@ function addStartGameEvent() {
                         newSVGMarkElement.setAttribute('width', '37px')
                         newSVGMarkElement.setAttribute('height', '80px')
                         newSVGMarkElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -450 : -490} 450 169 233`)
-                        newSVGMarkElement.setAttribute('style', `position: absolute; z-index: 10; left: ${getPosition(el, 'top left').x}; top: ${getPosition(el, 'top left').y}`)
+                        newSVGMarkElement.setAttribute('style', `position: absolute; z-index: 10; left: ${getPosition(el, 'top left').x}px; top: ${getPosition(el, 'top left').y}px`)
                         newSVGMarkElement.setAttribute('version', '1.1')
                         newSVGMarkElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
                         newSVGMarkElement.innerHTML += svgCellMarkedElement.outerHTML

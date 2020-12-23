@@ -13,61 +13,63 @@ export function parseStringToDOM(str: string) {
 }
 
 export function getPosition(element: HTMLElement, position: string) {
+    let scrollLeftOffset = window.pageXOffset || document.documentElement.scrollLeft
+    let scrollTopOffset = window.pageYOffset || document.documentElement.scrollTop
     const { top, left, width, height } = element.getBoundingClientRect();
     let point;
     switch (position) {
         case "top left":
             point = {
-                x: left + window.pageXOffset,
-                y: top + window.pageYOffset
+                x: left + scrollLeftOffset,
+                y: top + scrollTopOffset
             };
             break;
         case "top center":
             point = {
-                x: left + width / 2 + window.pageXOffset,
-                y: top + window.pageYOffset
+                x: left + width / 2 + scrollLeftOffset,
+                y: top + scrollTopOffset
             };
             break;
         case "top right":
             point = {
-                x: left + width + window.pageXOffset,
-                y: top + window.pageYOffset
+                x: left + width + scrollLeftOffset,
+                y: top + scrollTopOffset
             };
             break;
         case "center left":
             point = {
-                x: left + window.pageXOffset,
-                y: top + height / 2 + window.pageYOffset
+                x: left + scrollLeftOffset,
+                y: top + height / 2 + scrollTopOffset
             };
             break;
         case "center":
             point = {
-                x: left + width / 2 + window.pageXOffset,
-                y: top + height / 2 + window.pageYOffset
+                x: left + width / 2 + scrollLeftOffset,
+                y: top + height / 2 + scrollTopOffset
             };
             break;
         case "center right":
             point = {
-                x: left + width + window.pageXOffset,
-                y: top + height / 2 + window.pageYOffset
+                x: left + width + scrollLeftOffset,
+                y: top + height / 2 + scrollTopOffset
             };
             break;
         case "bottom left":
             point = {
-                x: left + window.pageXOffset,
-                y: top + height + window.pageYOffset
+                x: left + scrollLeftOffset,
+                y: top + height + scrollTopOffset
             };
             break;
         case "bottom center":
             point = {
-                x: left + width / 2 + window.pageXOffset,
-                y: top + height + window.pageYOffset
+                x: left + width / 2 + scrollLeftOffset,
+                y: top + height + scrollTopOffset
             };
             break;
         case "bottom right":
             point = {
-                x: left + width + window.pageXOffset,
-                y: top + height + window.pageYOffset
+                x: left + width + scrollLeftOffset,
+                y: top + height + scrollTopOffset
             };
             break;
     }
