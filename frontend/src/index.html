@@ -31,8 +31,17 @@
     <div id="loto-table-container">
     </div>
     <div id="playing-settings">
-      <!-- <button class="button" id="playing-exit-button">Bỏ game</button> -->
-      <!-- <button class="button" id="playing-restart-button">Khởi động lại (chỉ nhà cái)</button> -->
+      <div id="playing-button-container">
+        <button class="button" id="next-number-button">Gọi số</button>
+        <button class="button" id="called-number-check-button">Danh sách</button>
+      </div>
+      <div id="called-number-list">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </div>
 
@@ -40,6 +49,17 @@
     <div>
       <img style="width: 95vw;" src="/assets/win.gif" alt="Win" />
       <div style="text-align: center; font-size: 32px;">WIN</div>
+      <div style="display: flex; justify-content: center;"><button id="result-back-button" class="button" style="background-color: #f1bb4e;">Quay trở lại</button></div>
+    </div>
+  </div>
+
+  <div id="called-number-check-container-parent" style="display: none;">
+    <div id="called-number-check-container">
+      <div id="called-number-check-close-button" style="display: grid; grid-template-columns: 10% 1fr; grid-template-rows: 1fr;">
+        <div style="position: absolute; left: 20px; top: 15px; cursor: pointer; color: black; font-weight: bold;">X</div>
+      </div>
+      <div id="called-number-check-list">
+      </div>
     </div>
   </div>
 

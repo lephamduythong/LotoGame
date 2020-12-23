@@ -4,9 +4,11 @@ import { getLotoTableArray} from './app/lototablegenerator'
 import * as HTML_ELEMENT_CONST from './app/const/htmlelementid'
 import * as OTHER_CONST from './app/const/other'
 import * as AUDIO_PATH_CONST from './app/const/audiopath'
+import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
 
 // Variables definition
 let debugElement : HTMLDivElement
+let isHost : boolean
 let gameContainerElement : HTMLElement
 let svgHiddenLayerElement : HTMLElement
 let audioThemeElement : HTMLAudioElement
@@ -14,13 +16,7 @@ let audioThemeToggleElement : HTMLElement,
     audioThemeCrossElement : HTMLElement
 let isAudioThemeDisabled : boolean
 let joinButtonElement : HTMLElement
-let inputContainerElement : HTMLElement,
-    inputElement : HTMLInputElement,
-    inputCloseButtonElement : HTMLElement,
-    inputSubmitButtonElement : HTMLElement,
-    inputValidationElement : HTMLElement
 let loadingContainerParentElement : HTMLElement,
-    loadingContainerElement : HTMLElement,
     startButtonElement : HTMLButtonElement
 let lotoTableContainerElement : HTMLElement,
     playingContainerElement : HTMLElement,
@@ -29,13 +25,28 @@ let lotoTableContainerElement : HTMLElement,
     markedContainerElement : HTMLElement,
     svgCellGroupElement : HTMLElement,
     lotoTableFirstColumnRange : number[]
-let resultContainer : HTMLElement
+let resultContainerElement : HTMLElement
 let clickSound : HTMLAudioElement
+let nextNumberButtonElement: HTMLButtonElement
+let resultBackButtonElement: HTMLElement,
+    resultWinPointList : string[]
+let notCalledNumberList : number[],
+    exceptCallNumberList : number[],
+    calledNumberListElement : HTMLElement,
+    calledNumberList : number[],
+    calledNumberCheckButtonElement : HTMLButtonElement,
+    calledNumberCheckContainerParentElement : HTMLElement,
+    calledNumberCheckContainerElement : HTMLElement,
+    calledNumberCheckCloseButtonElement : HTMLElement,
+    calledNumberCheckListElement : HTMLElement
+let yaySound : HTMLAudioElement
 
-function init() {
+function init() {    
+    isHost = false
     markedLotoArrayTable = []
     isAudioThemeDisabled = false
     clickSound = new Audio(AUDIO_PATH_CONST.CLICK)
+    yaySound = new Audio(AUDIO_PATH_CONST.YAY)
     
     for (let i = 0; i < 9; i++) {
         let temp: number[] = []
@@ -50,6 +61,17 @@ function init() {
         lotoTableFirstColumnRange[i - 1] = i
     }
 
+    calledNumberList = []
+    notCalledNumberList = []
+    resultWinPointList = []
+    exceptCallNumberList = [10, 20, 30, 40, 50, 60, 70, 80]
+    for (let i = 1; i <= 89; i++) {
+        if (exceptCallNumberList.indexOf(i) >= 0) {
+            continue
+        }
+        notCalledNumberList.push(i)
+    }
+
     debugElement = document.getElementById(HTML_ELEMENT_CONST.DEBUG) as HTMLDivElement
     gameContainerElement = document.getElementById(HTML_ELEMENT_CONST.GAME_CONTAINER)
     svgHiddenLayerElement = document.getElementById(HTML_ELEMENT_CONST.SVG_HIDDEN_LAYER)
@@ -57,19 +79,92 @@ function init() {
     audioThemeToggleElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE)
     audioThemeCrossElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE_CROSS)
     joinButtonElement = document.getElementById(HTML_ELEMENT_CONST.SVG_JOIN_BUTTON)
-    inputElement = document.getElementById('input') as HTMLInputElement
-    inputContainerElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_CONTAINER)
-    inputCloseButtonElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_CLOSE_BUTTON)
-    inputSubmitButtonElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_SUBMIT_BUTTON)
-    inputValidationElement = document.getElementById(HTML_ELEMENT_CONST.INPUT_VALIDATION)
     loadingContainerParentElement = document.getElementById(HTML_ELEMENT_CONST.LOADING_CONTAINER_PARENT)
-    loadingContainerElement = document.getElementById(HTML_ELEMENT_CONST.LOADING_CONTAINER)
     lotoTableContainerElement = document.getElementById(HTML_ELEMENT_CONST.LOTO_TABLE_CONTAINER)
     startButtonElement = document.getElementById(HTML_ELEMENT_CONST.START_BUTTON) as HTMLButtonElement
     playingContainerElement = document.getElementById(HTML_ELEMENT_CONST.PLAYING_CONTAINER)
     markedContainerElement = document.getElementById(HTML_ELEMENT_CONST.MARKED_CONTAINER)
     svgCellGroupElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_GROUP)
-    resultContainer = document.getElementById(HTML_ELEMENT_CONST.RESULT_CONTAINER)
+    resultContainerElement = document.getElementById(HTML_ELEMENT_CONST.RESULT_CONTAINER)
+    nextNumberButtonElement = document.getElementById(HTML_ELEMENT_CONST.NEXT_NUMBER_BUTTON) as HTMLButtonElement
+    calledNumberListElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_LIST)
+    resultBackButtonElement = document.getElementById(HTML_ELEMENT_CONST.RESULT_BACK_BUTTON)
+    calledNumberCheckButtonElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_BUTTON) as HTMLButtonElement
+    calledNumberCheckContainerParentElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CONTAINER_PARENT)
+    calledNumberCheckContainerElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CONTAINER)
+    calledNumberCheckCloseButtonElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CLOSE_BUTTON)
+    calledNumberCheckListElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_LIST)
+}
+
+function setup() {
+    svgHiddenLayerElement.style.display = 'none'
+    audioThemeCrossElement.style.display = 'none'
+
+    addAudioThemeToggleEvent()
+    addJoinEvent()
+    addStartGameEvent()
+    addNextNumberButtonEvent()
+    addResultBackButtonEvent()
+    addCalledNumberCheckButtonEvent()
+}
+
+function loop() {
+
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+    init()
+    setup()
+    loop()
+})
+
+function addCalledNumberCheckButtonEvent() {
+    calledNumberCheckButtonElement.addEventListener('click', async _ => {
+        calledNumberCheckContainerParentElement.style.display = 'grid'
+        await delay(10)
+        calledNumberCheckContainerElement.style.transform = 'scale(1)'
+        calledNumberCheckContainerElement.style.opacity = '0.98'
+    })
+    calledNumberCheckCloseButtonElement.addEventListener('click', async _ => {
+        calledNumberCheckContainerElement.style.transform = 'scale(0.1)'
+        calledNumberCheckContainerElement.style.opacity = '0.1'
+        await delay(550)
+        calledNumberCheckContainerParentElement.style.display = 'none'
+    })
+}
+
+function addResultBackButtonEvent() {
+    resultBackButtonElement.addEventListener('click', _ => {
+        markedContainerElement.style.removeProperty('display')
+        resultContainerElement.style.display = 'none'
+        playingContainerElement.style.display = 'grid'
+        for (let i = 0; i < resultWinPointList.length; i++) {
+            let point = resultWinPointList[i].split(',') 
+            console.log(point)
+            document.getElementById(`svg-cell-${point[0]}-${point[1]}`).children[0].classList.add('highlight-win-called-number')
+        }
+    })
+}
+
+function addNextNumberButtonEvent() {
+    nextNumberButtonElement.addEventListener('click', _ => {  
+        let randomedNumberForCallIndex = randomInt(0, notCalledNumberList.length)
+        let randomedNumberForCall = notCalledNumberList[randomedNumberForCallIndex]
+        googleVoiceCallNumber(randomedNumberForCall)
+        calledNumberList.push(randomedNumberForCall)
+        calledNumberCheckListElement.innerText = (() : string => {
+            let temp : string = ''
+            for (let i = 0; i < calledNumberList.length; i++) {
+                temp += calledNumberList[i] + " "
+            }
+            return temp
+        })()
+        notCalledNumberList.splice(randomedNumberForCallIndex, 1)
+        calledNumberListElement.lastElementChild.remove()
+        let calledNumberContainerElement = document.createElement('div')
+        calledNumberContainerElement.innerText = randomedNumberForCall.toString()
+        calledNumberListElement.prepend(calledNumberContainerElement)
+    })
 }
 
 function addAudioThemeToggleEvent() {
@@ -178,21 +273,27 @@ function addStartGameEvent() {
                         for (let k = 0; k < 9; k++) {
                             if (markedLotoArrayTable[k][j] === 1) {
                                 count++
+                                resultWinPointList.push(k.toString() + ',' + j.toString())
                             }
                         }
                         if (count === 5) {
                             win()
+                            return
                         }
+                        resultWinPointList = []
                         count = 0
                         // Scan horizontal
                         for (let k = 0; k < 9; k++) {
                             if (markedLotoArrayTable[i][k] === 1) {
                                 count++
+                                resultWinPointList.push(i.toString() + ',' + k.toString())
                             }
                         }
                         if (count === 5) {
                             win()
+                            return
                         }
+                        resultWinPointList = []
                     }
                 })
             }
@@ -203,19 +304,6 @@ function addStartGameEvent() {
 function win() {
     playingContainerElement.style.display = 'none'
     markedContainerElement.style.display = 'none'
-    resultContainer.style.display = 'flex'
+    resultContainerElement.style.display = 'flex'
+    yaySound.play()
 }
-
-function setup() {
-    svgHiddenLayerElement.style.display = 'none'
-    audioThemeCrossElement.style.display = 'none'
-
-    addAudioThemeToggleEvent()
-    addJoinEvent()
-    addStartGameEvent()
-}
-
-window.addEventListener("DOMContentLoaded", function() {
-    init()
-    setup()
-})

@@ -59,7 +59,7 @@ body {
 #loto-table-container {
     display: grid;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(9, 1fr);
     z-index: 5;
@@ -67,7 +67,10 @@ body {
 }
 
 #playing-settings {
-    margin: 10px;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 1fr;
+    overflow: hidden;
 }
 
 .playing-table-row {
@@ -103,10 +106,86 @@ body {
     align-items: center;
 }
 
+#result-back-button {
+    color: #0E1113;
+}
+
+#called-number-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    font-size: 42px;
+}
+
+#called-number-list div {
+    padding: 5px;
+}
+
+#called-number-list div:first-child {
+    background-color: rgba(50, 207, 235, 0.521);
+}
+
+#playing-button-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 5px;
+}
+
+#playing-button-container button {
+    margin-top: 5px;
+    padding: 0;
+}
+
+#called-number-check-container-parent {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+#called-number-check-container {
+    display: grid;
+    width: 75vw;
+    height: 75vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5% 1fr;
+    background-color: rgb(217, 93, 241);
+    border-radius: 5%;
+    box-shadow: 3px 3px white; 
+    transform: scale(0.1);
+    opacity: 0.1;
+    transition-property: transform, opacity;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(.25,.58,.84,.01);
+}
+
+#called-number-check-list {
+    margin: 10px 25px 0 25px;
+    font-size: 32px;
+}
+
+@keyframes highlight-win-called-number-keyframes {
+    0% {
+        fill: white;
+    }
+    100% {
+        fill: rgb(210, 252, 25);
+    }
+}
+
+.highlight-win-called-number {
+    animation: highlight-win-called-number-keyframes 1s ease infinite alternate;
+}
+
 .button {
     display:inline-block;
     padding:0.3em 1.2em;
     margin:0 0.1em 0.1em 0;
+    margin-top: 1px;
     border:0.16em solid rgba(255,255,255,0);
     border-radius:2em;
     box-sizing: border-box;
@@ -116,7 +195,8 @@ body {
     color:#FFFFFF;
     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
     text-align:center;
-    background-color:#9a4ef1
+    background-color:#9a4ef1;
+    cursor: pointer;
 }
 
 /* 
