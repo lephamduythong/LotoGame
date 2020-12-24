@@ -6,6 +6,10 @@ import * as OTHER_CONST from './app/const/other'
 import * as AUDIO_PATH_CONST from './app/const/audiopath'
 import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
 
+import ReactDOM from 'react-dom'
+import {TEST} from './app/component/test'
+ReactDOM.render(TEST, document.getElementById('debug'))
+
 // Variables definition
 let debugElement : HTMLDivElement
 let isHost : boolean

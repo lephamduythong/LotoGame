@@ -15,7 +15,7 @@ module.exports = {
     main: './' + src_Path + '/index.ts'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.tsx', '.jsx']
   },
   output: {
     path: path.resolve(__dirname, prod_Path),
@@ -27,9 +27,13 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.ts?$/,
+      test: /\.(ts|tsx)$/,
       use: 'ts-loader',
       exclude: /node_modules/
+    }, {
+      test: /\.(js|jsx)$/,
+      use: 'babel-loader',
+      exclude: /node_modules/,
     }, {
       test: selectedPreprocessor.fileRegexp,
       use: [{
