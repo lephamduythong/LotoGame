@@ -154,6 +154,7 @@ function addNextNumberButtonEvent() {
         let randomedNumberForCall = notCalledNumberList[randomedNumberForCallIndex]
         googleVoiceCallNumber(randomedNumberForCall)
         calledNumberList.push(randomedNumberForCall)
+        calledNumberList = calledNumberList.sort()
         calledNumberCheckListElement.innerText = (() : string => {
             let temp : string = ''
             for (let i = 0; i < calledNumberList.length; i++) {
