@@ -24,6 +24,7 @@ let lotoTableContainerElement : HTMLElement,
     markedLotoArrayTable: number[][],
     markedContainerElement : HTMLElement,
     svgCellGroupElement : HTMLElement,
+    svgCellMarkedElement : HTMLElement,
     lotoTableFirstColumnRange : number[]
 let resultContainerElement : HTMLElement
 let clickSound : HTMLAudioElement
@@ -85,6 +86,7 @@ function init() {
     playingContainerElement = document.getElementById(HTML_ELEMENT_CONST.PLAYING_CONTAINER)
     markedContainerElement = document.getElementById(HTML_ELEMENT_CONST.MARKED_CONTAINER)
     svgCellGroupElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_GROUP)
+    svgCellMarkedElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_MARKED)
     resultContainerElement = document.getElementById(HTML_ELEMENT_CONST.RESULT_CONTAINER)
     nextNumberButtonElement = document.getElementById(HTML_ELEMENT_CONST.NEXT_NUMBER_BUTTON) as HTMLButtonElement
     calledNumberListElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_LIST)
@@ -148,7 +150,7 @@ function addResultBackButtonEvent() {
 
 function addNextNumberButtonEvent() {
     nextNumberButtonElement.addEventListener('click', _ => {  
-        let randomedNumberForCallIndex = randomInt(0, notCalledNumberList.length)
+        let randomedNumberForCallIndex = randomInt(0, notCalledNumberList.length - 1)
         let randomedNumberForCall = notCalledNumberList[randomedNumberForCallIndex]
         googleVoiceCallNumber(randomedNumberForCall)
         calledNumberList.push(randomedNumberForCall)
@@ -210,7 +212,7 @@ function addStartGameEvent() {
             let newPlayingTableRowElement = document.createElement('div')
             newPlayingTableRowElement.classList.add('playing-table-row')
             for (let j = 0; j < 9; j++) {
-                let newSVGCellGroupElement = document.createElement('svg')
+                let newSVGCellGroupElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
                 let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
                 newSVGCellGroupElement.setAttribute('width', '37px')
                 newSVGCellGroupElement.setAttribute('height', '60px')
@@ -219,7 +221,6 @@ function addStartGameEvent() {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
                 }
                 newSVGCellGroupElement.setAttribute('version', '1.1')
-                newSVGCellGroupElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
                 newSVGCellGroupElement.innerHTML += svgCellGroupElement.outerHTML
                 newSVGCellGroupElement.children[0].removeAttribute('id')
                 newSVGCellGroupElement.children[0].setAttribute('id', 'svg-cell-' + i + '-' + j)
@@ -244,7 +245,6 @@ function addStartGameEvent() {
         }
 
         let childrenOfPlayingContainerElement = lotoTableContainerElement.children
-        let svgCellMarkedElement = document.getElementById('svg-cell-marked')
         for (let i = 0; i < 9; i++) {
             let childrenOfPlayingTableRowElement = childrenOfPlayingContainerElement[i].children
             for (let j = 0; j < 9; j++) {
@@ -255,16 +255,23 @@ function addStartGameEvent() {
                         
                         // Mark
                         let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
-                        let newSVGMarkElement = document.createElement('svg')
+                        let newSVGMarkElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
+                        newSVGMarkElement.setAttribute('version', '1.1')
+                        newSVGMarkElement.setAttribute('id', `svg-marked-${i}-${j}`)                       
                         newSVGMarkElement.setAttribute('width', '37px')
                         newSVGMarkElement.setAttribute('height', '80px')
-                        newSVGMarkElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -450 : -490} 450 169 233`)
-                        newSVGMarkElement.setAttribute('style', `position: absolute; z-index: 10; left: ${getPosition(el, 'top left').x}px; top: ${getPosition(el, 'top left').y}px`)
-                        newSVGMarkElement.setAttribute('version', '1.1')
-                        newSVGMarkElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+                        newSVGMarkElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -450 : -490} 450 175 233`)
+                        newSVGMarkElement.setAttribute('style', `position: absolute; z-index: 10; left: ${getPosition(el, 'top left').x}px; top: ${getPosition(el, 'top left').y}px; cursor: pointer`)
                         newSVGMarkElement.innerHTML += svgCellMarkedElement.outerHTML
                         newSVGMarkElement.children[0].removeAttribute('id')
-                        markedContainerElement.innerHTML += newSVGMarkElement.outerHTML
+                        markedContainerElement.appendChild(newSVGMarkElement)
+                        document.getElementById(`svg-marked-${i}-${j}`).addEventListener('click', e => {
+                            console.log(i + " - " + j)
+                            let currentSVGMarked = e.currentTarget as HTMLElement
+                            currentSVGMarked.remove()
+                            markedLotoArrayTable[i][j] = 0
+                        })
+                        
                         markedLotoArrayTable[i][j] = 1
 
                         // Check win ?
