@@ -1,10 +1,11 @@
 import './styles/style.scss';
+import { compile } from 'handlebars'
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
+import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
 import * as HTML_ELEMENT_CONST from './app/const/htmlelementid'
 import * as OTHER_CONST from './app/const/other'
 import * as AUDIO_PATH_CONST from './app/const/audiopath'
-import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
 
 // Variables definition
 let debugElement : HTMLDivElement
@@ -114,10 +115,31 @@ function loop() {
 
 }
 
+// Template
+import loadingContainerParentTemplate from './app/template/loadingcontainerparent'
+import playingContainerTemplate from './app/template/playingcontainer'
+import resultContainerTemplate from './app/template/resultcontainer'
+import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
+import markedContainerTemplate from "./app/template/markedContainer";
+
+function compileBodyTemplate() {
+    let template = compile(document.body.innerHTML)
+    let data = {
+        loadingContainerParent: loadingContainerParentTemplate,
+        playingContainer: playingContainerTemplate,
+        resultContainer: resultContainerTemplate,
+        calledNumberCheckContainerParent: calledNumberCheckContainerParentTemplate,
+        markedContainer: markedContainerTemplate
+    }
+    document.body.innerHTML = template(data)
+}
+
 window.addEventListener("DOMContentLoaded", function() {
+    compileBodyTemplate()
     init()
     setup()
     loop()
+    document.body.style.removeProperty('display')
 })
 
 function addCalledNumberCheckButtonEvent() {

@@ -27,3 +27,4 @@ export const CALLED_NUMBER_CHECK_CONTAINER_PARENT = 'called-number-check-contain
 export const CALLED_NUMBER_CHECK_CONTAINER = 'called-number-check-container'
 export const CALLED_NUMBER_CHECK_CLOSE_BUTTON = 'called-number-check-close-button'
 export const CALLED_NUMBER_CHECK_LIST = 'called-number-check-list'
+export const PLAYING_SETTINGS = 'playing-settings'
