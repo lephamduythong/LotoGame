@@ -1,5 +1,13 @@
+// Style
+import '../node_modules/normalize.css/normalize.css'
 import './index.scss';
+
+// Lib
 import { compile } from 'handlebars'
+import firebase from 'firebase/app';
+import 'firebase/database'
+
+// App function
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
 import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
@@ -8,6 +16,7 @@ import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
 import * as HTML_ELEMENT_ID from './app/const/htmlelementid'
 import * as OTHER from './app/const/other'
 import * as AUDIO_PATH from './app/const/audiopath'
+import * as PATH from './app/const/path'
 
 // Variables definition
 let debugElement : HTMLDivElement
@@ -124,7 +133,13 @@ import resultContainerTemplate from './app/template/resultcontainer'
 import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
 import markedContainerTemplate from "./app/template/markedContainer";
 
-function renderBodyTemplate() {
+function renderDocumentTemplate() {
+    let templateHead = compile(document.head.innerHTML)
+    let dataHead = {
+        staticPath: PATH.STATIC,
+    }
+    document.head.innerHTML = templateHead(dataHead)
+
     let template = compile(document.body.innerHTML)
     let data = {
         loadingContainerParent: loadingContainerParentTemplate,
@@ -137,7 +152,7 @@ function renderBodyTemplate() {
 }
 
 window.addEventListener("DOMContentLoaded", function() {
-    renderBodyTemplate()
+    renderDocumentTemplate()
     init()
     setup()
     loop()
