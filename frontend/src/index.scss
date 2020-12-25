@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
 
+$base: get("base");
+$spacing: get("spacing");
+$breakpoints: get("breakpoints");
+$typography: get("typography");
+$colors: get("colors");
+
+.text { 
+    color: get('colors.secondary');
+    background: get('colors.primary');
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

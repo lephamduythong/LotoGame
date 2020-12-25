@@ -1,0 +1,5 @@
+{
+    "watch": ["webpack.dev.js", "theme.ts"],
+    "exec": "npm run build:dev",
+    "verbose": false
+ }

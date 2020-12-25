@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build:dev",
+    "start": "nodemon",
     "build:dev": "webpack-dev-server --env dev --mode none --host 0.0.0.0",
     "build:prod": "webpack --env prod --mode production"
   },
@@ -18,6 +18,8 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.14.1",
+    "node-sass-utils": "^1.1.3",
+    "nodemon": "^2.0.6",
     "postcss-loader": "^2.1.5",
     "sass-loader": "^7.0.2",
     "style-loader": "^0.21.0",
