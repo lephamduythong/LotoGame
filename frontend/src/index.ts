@@ -1,6 +1,6 @@
 // Style
 import '../node_modules/normalize.css/normalize.css'
-import './index.scss'
+import './index.scss';
 
 // Lib
 import { compile } from 'handlebars'
