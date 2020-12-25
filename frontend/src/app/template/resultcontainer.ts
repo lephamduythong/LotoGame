@@ -5,7 +5,7 @@ const template = `
         <div>
             <img style="width: 95vw;" src="${PATH.STATIC}/win.gif" alt="Win" />
             <div style="text-align: center; font-size: 32px;">WIN</div>
-            <div style="display: flex; justify-content: center;"><button id="result-back-button" class="button" style="background-color: #f1bb4e;">Quay trở lại</button></div>
+            <div style="display: flex; justify-content: center;"><button id="${HTML_ELEMENT_ID.RESULT_BACK_BUTTON}" class="button" style="background-color: #f1bb4e;">Quay trở lại</button></div>
         </div>
     </div>
 `

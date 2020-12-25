@@ -114,7 +114,7 @@ function setup() {
 }
 
 function loop() {
-    
+
 }
 
 // Template
@@ -124,7 +124,7 @@ import resultContainerTemplate from './app/template/resultcontainer'
 import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
 import markedContainerTemplate from "./app/template/markedContainer";
 
-function compileBodyTemplate() {
+function renderBodyTemplate() {
     let template = compile(document.body.innerHTML)
     let data = {
         loadingContainerParent: loadingContainerParentTemplate,
@@ -137,7 +137,7 @@ function compileBodyTemplate() {
 }
 
 window.addEventListener("DOMContentLoaded", function() {
-    compileBodyTemplate()
+    renderBodyTemplate()
     init()
     setup()
     loop()
