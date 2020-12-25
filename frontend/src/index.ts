@@ -31,7 +31,7 @@ let lotoTableContainerElement : HTMLElement,
     lotoTableFirstColumnRange : number[]
 let resultContainerElement : HTMLElement
 let clickSound : HTMLAudioElement
-let nextNumberButtonElement: HTMLButtonElement
+let nextNumberCallButtonElement: HTMLButtonElement
 let resultBackButtonElement: HTMLElement,
     resultWinPointList : string[]
 let notCalledNumberList : number[],
@@ -91,7 +91,7 @@ function init() {
     svgCellGroupElement = document.getElementById(HTML_ELEMENT_ID.SVG_CELL_GROUP)
     svgCellMarkedElement = document.getElementById(HTML_ELEMENT_ID.SVG_CELL_MARKED)
     resultContainerElement = document.getElementById(HTML_ELEMENT_ID.RESULT_CONTAINER)
-    nextNumberButtonElement = document.getElementById(HTML_ELEMENT_ID.NEXT_NUMBER_BUTTON) as HTMLButtonElement
+    nextNumberCallButtonElement = document.getElementById(HTML_ELEMENT_ID.NEXT_NUMBER_BUTTON) as HTMLButtonElement
     calledNumberListElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_LIST)
     resultBackButtonElement = document.getElementById(HTML_ELEMENT_ID.RESULT_BACK_BUTTON)
     calledNumberCheckButtonElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_BUTTON) as HTMLButtonElement
@@ -172,12 +172,12 @@ function addResultBackButtonEvent() {
 }
 
 function addNextNumberButtonEvent() {
-    nextNumberButtonElement.addEventListener('click', _ => {  
+    nextNumberCallButtonElement.addEventListener('click', _ => {  
         let randomedNumberForCallIndex = randomInt(0, notCalledNumberList.length - 1)
         let randomedNumberForCall = notCalledNumberList[randomedNumberForCallIndex]
         googleVoiceCallNumber(randomedNumberForCall)
         calledNumberList.push(randomedNumberForCall)
-        calledNumberList = calledNumberList.sort()
+        calledNumberList = calledNumberList.sort((a, b) => a - b)
         calledNumberCheckListElement.innerText = (() : string => {
             let temp : string = ''
             for (let i = 0; i < calledNumberList.length; i++) {
