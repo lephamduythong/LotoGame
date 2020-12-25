@@ -53,6 +53,11 @@ let notCalledNumberList : number[],
     calledNumberCheckCloseButtonElement : HTMLElement,
     calledNumberCheckListElement : HTMLElement
 let yaySound : HTMLAudioElement
+let inputContainerElement : HTMLElement,
+    inputValidationElement: HTMLElement,
+    inputCloseButtonElement: HTMLButtonElement,
+    inputSubmitButtonElement: HTMLButtonElement,
+    inputElement: HTMLInputElement
 
 function init() {    
     isHost = false
@@ -108,6 +113,11 @@ function init() {
     calledNumberCheckContainerElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_CONTAINER)
     calledNumberCheckCloseButtonElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_CLOSE_BUTTON)
     calledNumberCheckListElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_LIST)
+    inputContainerElement = document.getElementById(HTML_ELEMENT_ID.INPUT_CONTAINER)
+    inputValidationElement = document.getElementById(HTML_ELEMENT_ID.INPUT_VALIDATION)
+    inputCloseButtonElement = document.getElementById(HTML_ELEMENT_ID.INPUT_CLOSE_BUTTON) as HTMLButtonElement
+    inputSubmitButtonElement = document.getElementById(HTML_ELEMENT_ID.INPUT_SUBMIT_BUTTON) as HTMLButtonElement
+    inputElement = document.getElementById(HTML_ELEMENT_ID.INPUT) as HTMLInputElement
 }
 
 function setup() {
@@ -116,6 +126,7 @@ function setup() {
 
     addAudioThemeToggleEvent()
     addJoinEvent()
+    addCloseAndSubmitInputButtonEvent()
     addStartGameEvent()
     addNextNumberButtonEvent()
     addResultBackButtonEvent()
@@ -132,6 +143,7 @@ import playingContainerTemplate from './app/template/playingcontainer'
 import resultContainerTemplate from './app/template/resultcontainer'
 import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
 import markedContainerTemplate from "./app/template/markedContainer";
+import inputContainerTemplate from './app/template/inputcontainer'
 
 function renderDocumentTemplate() {
     let templateHead = compile(document.head.innerHTML)
@@ -142,6 +154,7 @@ function renderDocumentTemplate() {
 
     let template = compile(document.body.innerHTML)
     let data = {
+        inputContainer: inputContainerTemplate,
         loadingContainerParent: loadingContainerParentTemplate,
         playingContainer: playingContainerTemplate,
         resultContainer: resultContainerTemplate,
@@ -158,6 +171,25 @@ window.addEventListener("DOMContentLoaded", function() {
     loop()
     document.body.style.removeProperty('display')
 })
+
+function addCloseAndSubmitInputButtonEvent() {
+    inputCloseButtonElement.addEventListener('click', _ => {
+        gameContainerElement.style.opacity = '1'
+        inputContainerElement.style.display = 'flex'
+        inputContainerElement.style.top = '-200px'
+    })
+    inputSubmitButtonElement.addEventListener('click', _=> {
+        // Validate user's name
+        let name = inputElement.value
+        if (!name || name === '') {
+            inputValidationElement.innerText = "Không được bỏ trống"
+            return
+        }
+        inputContainerElement.style.display = 'none'
+        gameContainerElement.style.display = 'none'
+        loadingContainerParentElement.style.display = 'flex'
+    })
+}
 
 function addCalledNumberCheckButtonEvent() {
     calledNumberCheckButtonElement.addEventListener('click', async _ => {
@@ -230,9 +262,9 @@ function addAudioThemeToggleEvent() {
 
 function addJoinEvent() {
     joinButtonElement.addEventListener('click', async _ => {
-        await delay(50)
-        startButtonElement.click()
-        gameContainerElement.style.display = 'none'
+        inputContainerElement.style.top = '10px'
+        gameContainerElement.style.opacity = '0.1'
+        inputValidationElement.innerText = ''
     })
 }
 

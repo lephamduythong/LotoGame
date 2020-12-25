@@ -204,6 +204,64 @@ body {
     cursor: pointer;
 }
 
+#input-container {
+    display: flex;
+    position: absolute;
+    width: 100vw;
+    justify-content: center;
+    top: -250px;
+    transition-property: top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+}
+
+.input-wrapper {
+    display: inline-block;
+    width: 200px;
+}
+
+.input-wrapper > input, svg {
+    position: relative;
+}
+
+.input-wrapper > svg {
+    left: -50px;
+    top: -15px;
+    transform: scaleY(0.5);
+}
+
+.input-wrapper > input {
+    outline: none;
+    background: none;
+    color: white;
+    resize: none;
+    border: none;
+    top: 45px;
+    left: 35px;
+    z-index: 10;
+    width: 125px;
+}
+
+.input-label {
+    position: relative;
+    left: 10px;
+    top: 20px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#input-close-button {
+    position: relative;
+    top: -20px;
+    z-index: 10;
+}
+
+#input-submit-button {
+    position: relative;
+    top: -20px;
+    z-index: 10;
+}
+
 /* 
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
