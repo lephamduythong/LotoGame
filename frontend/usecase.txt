@@ -1,0 +1,13 @@
+Todo:
+_Khi nhấn join, người đầu tiên tham gia sẽ là nhà cái (host)
+_Cần tối thiểu ít nhất 2 người để trò chơi bắt đầu
+_Tự động bắt đầu sau 1 phút khi có người thứ 2 tham gia
+_Nhà cái có thể vào chơi ngay thông qua nút ấn "Bắt đầu ngay" khi đủ từ 2 người tham gia trở lên
+_Hiển thị 1,2,3 sẵn sàng vào trò chơi
+_Nhà con không có quyền gọi số
+_Cho phép xem bàn cờ và sự đánh dấu nước đi của bàn cờ người đang chơi khác
+_Khi không có tương tác qua lại thì ít nhất sau 20s, trò chơi sẽ auto reset
+
+Future:
+_Tạo phòng, tham gia phòng chơi
+_Đăng nhập, lưu thành tích

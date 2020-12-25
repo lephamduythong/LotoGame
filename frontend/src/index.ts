@@ -4,13 +4,14 @@ import './index.scss';
 
 // Lib
 import { compile } from 'handlebars'
-import firebase from 'firebase/app';
-import 'firebase/database'
 
 // App function
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
 import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
+import { connectAndInit } from './app/firebase'
+
+let dbRef = connectAndInit()
 
 // Constant
 import * as HTML_ELEMENT_ID from './app/const/htmlelementid'
@@ -144,6 +145,7 @@ import resultContainerTemplate from './app/template/resultcontainer'
 import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
 import markedContainerTemplate from "./app/template/markedContainer";
 import inputContainerTemplate from './app/template/inputcontainer'
+import { snap } from 'gsap';
 
 function renderDocumentTemplate() {
     let templateHead = compile(document.head.innerHTML)
@@ -178,7 +180,7 @@ function addCloseAndSubmitInputButtonEvent() {
         inputContainerElement.style.display = 'flex'
         inputContainerElement.style.top = '-200px'
     })
-    inputSubmitButtonElement.addEventListener('click', _=> {
+    inputSubmitButtonElement.addEventListener('click', async _=> {
         // Validate user's name
         let name = inputElement.value
         if (!name || name === '') {
@@ -188,6 +190,21 @@ function addCloseAndSubmitInputButtonEvent() {
         inputContainerElement.style.display = 'none'
         gameContainerElement.style.display = 'none'
         loadingContainerParentElement.style.display = 'flex'
+
+        dbRef.once('value', (snap) => {
+            let numberOnline = snap.val()['number-online']
+            if (numberOnline === 0) {
+                // Host
+                isHost = true
+                dbRef.update({
+                    'number-online': 1,
+                    'is-host': true
+                })
+            }
+        })
+        dbRef.update({
+            'name': inputElement.value
+        })
     })
 }
 
