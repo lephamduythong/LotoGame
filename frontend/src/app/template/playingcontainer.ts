@@ -1,5 +1,4 @@
 import * as HTML_ELEMENT_ID from '../const/htmlelementid'
-
 const template = `
 <div id="${HTML_ELEMENT_ID.PLAYING_CONTAINER}" style="display: none;">
     <div id="${HTML_ELEMENT_ID.LOTO_TABLE_CONTAINER}"></div>

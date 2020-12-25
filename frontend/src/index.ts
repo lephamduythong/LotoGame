@@ -3,9 +3,11 @@ import { compile } from 'handlebars'
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
 import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
-import * as HTML_ELEMENT_CONST from './app/const/htmlelementid'
-import * as OTHER_CONST from './app/const/other'
-import * as AUDIO_PATH_CONST from './app/const/audiopath'
+
+// Constant
+import * as HTML_ELEMENT_ID from './app/const/htmlelementid'
+import * as OTHER from './app/const/other'
+import * as AUDIO_PATH from './app/const/audiopath'
 
 // Variables definition
 let debugElement : HTMLDivElement
@@ -47,8 +49,8 @@ function init() {
     isHost = false
     markedLotoArrayTable = []
     isAudioThemeDisabled = false
-    clickSound = new Audio(AUDIO_PATH_CONST.CLICK)
-    yaySound = new Audio(AUDIO_PATH_CONST.YAY)
+    clickSound = new Audio(AUDIO_PATH.CLICK)
+    yaySound = new Audio(AUDIO_PATH.YAY)
     
     for (let i = 0; i < 9; i++) {
         let temp: number[] = []
@@ -74,29 +76,29 @@ function init() {
         notCalledNumberList.push(i)
     }
 
-    debugElement = document.getElementById(HTML_ELEMENT_CONST.DEBUG) as HTMLDivElement
-    gameContainerElement = document.getElementById(HTML_ELEMENT_CONST.GAME_CONTAINER)
-    svgHiddenLayerElement = document.getElementById(HTML_ELEMENT_CONST.SVG_HIDDEN_LAYER)
-    audioThemeElement = document.getElementById(HTML_ELEMENT_CONST.AUDIO_THEME) as HTMLAudioElement
-    audioThemeToggleElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE)
-    audioThemeCrossElement = document.getElementById(HTML_ELEMENT_CONST.SVG_MUSIC_NOTE_CROSS)
-    joinButtonElement = document.getElementById(HTML_ELEMENT_CONST.SVG_JOIN_BUTTON)
-    loadingContainerParentElement = document.getElementById(HTML_ELEMENT_CONST.LOADING_CONTAINER_PARENT)
-    lotoTableContainerElement = document.getElementById(HTML_ELEMENT_CONST.LOTO_TABLE_CONTAINER)
-    startButtonElement = document.getElementById(HTML_ELEMENT_CONST.START_BUTTON) as HTMLButtonElement
-    playingContainerElement = document.getElementById(HTML_ELEMENT_CONST.PLAYING_CONTAINER)
-    markedContainerElement = document.getElementById(HTML_ELEMENT_CONST.MARKED_CONTAINER)
-    svgCellGroupElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_GROUP)
-    svgCellMarkedElement = document.getElementById(HTML_ELEMENT_CONST.SVG_CELL_MARKED)
-    resultContainerElement = document.getElementById(HTML_ELEMENT_CONST.RESULT_CONTAINER)
-    nextNumberButtonElement = document.getElementById(HTML_ELEMENT_CONST.NEXT_NUMBER_BUTTON) as HTMLButtonElement
-    calledNumberListElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_LIST)
-    resultBackButtonElement = document.getElementById(HTML_ELEMENT_CONST.RESULT_BACK_BUTTON)
-    calledNumberCheckButtonElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_BUTTON) as HTMLButtonElement
-    calledNumberCheckContainerParentElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CONTAINER_PARENT)
-    calledNumberCheckContainerElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CONTAINER)
-    calledNumberCheckCloseButtonElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_CLOSE_BUTTON)
-    calledNumberCheckListElement = document.getElementById(HTML_ELEMENT_CONST.CALLED_NUMBER_CHECK_LIST)
+    debugElement = document.getElementById(HTML_ELEMENT_ID.DEBUG) as HTMLDivElement
+    gameContainerElement = document.getElementById(HTML_ELEMENT_ID.GAME_CONTAINER)
+    svgHiddenLayerElement = document.getElementById(HTML_ELEMENT_ID.SVG_HIDDEN_LAYER)
+    audioThemeElement = document.getElementById(HTML_ELEMENT_ID.AUDIO_THEME) as HTMLAudioElement
+    audioThemeToggleElement = document.getElementById(HTML_ELEMENT_ID.SVG_MUSIC_NOTE)
+    audioThemeCrossElement = document.getElementById(HTML_ELEMENT_ID.SVG_MUSIC_NOTE_CROSS)
+    joinButtonElement = document.getElementById(HTML_ELEMENT_ID.SVG_JOIN_BUTTON)
+    loadingContainerParentElement = document.getElementById(HTML_ELEMENT_ID.LOADING_CONTAINER_PARENT)
+    lotoTableContainerElement = document.getElementById(HTML_ELEMENT_ID.LOTO_TABLE_CONTAINER)
+    startButtonElement = document.getElementById(HTML_ELEMENT_ID.START_BUTTON) as HTMLButtonElement
+    playingContainerElement = document.getElementById(HTML_ELEMENT_ID.PLAYING_CONTAINER)
+    markedContainerElement = document.getElementById(HTML_ELEMENT_ID.MARKED_CONTAINER)
+    svgCellGroupElement = document.getElementById(HTML_ELEMENT_ID.SVG_CELL_GROUP)
+    svgCellMarkedElement = document.getElementById(HTML_ELEMENT_ID.SVG_CELL_MARKED)
+    resultContainerElement = document.getElementById(HTML_ELEMENT_ID.RESULT_CONTAINER)
+    nextNumberButtonElement = document.getElementById(HTML_ELEMENT_ID.NEXT_NUMBER_BUTTON) as HTMLButtonElement
+    calledNumberListElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_LIST)
+    resultBackButtonElement = document.getElementById(HTML_ELEMENT_ID.RESULT_BACK_BUTTON)
+    calledNumberCheckButtonElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_BUTTON) as HTMLButtonElement
+    calledNumberCheckContainerParentElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_CONTAINER_PARENT)
+    calledNumberCheckContainerElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_CONTAINER)
+    calledNumberCheckCloseButtonElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_CLOSE_BUTTON)
+    calledNumberCheckListElement = document.getElementById(HTML_ELEMENT_ID.CALLED_NUMBER_CHECK_LIST)
 }
 
 function setup() {
@@ -112,7 +114,7 @@ function setup() {
 }
 
 function loop() {
-
+    
 }
 
 // Template
@@ -164,7 +166,6 @@ function addResultBackButtonEvent() {
         playingContainerElement.style.display = 'grid'
         for (let i = 0; i < resultWinPointList.length; i++) {
             let point = resultWinPointList[i].split(',') 
-            console.log(point)
             document.getElementById(`svg-cell-${point[0]}-${point[1]}`).children[0].classList.add('highlight-win-called-number')
         }
     })
@@ -246,17 +247,16 @@ function addStartGameEvent() {
                 newSVGCellGroupElement.setAttribute('version', '1.1')
                 newSVGCellGroupElement.innerHTML += svgCellGroupElement.outerHTML
                 newSVGCellGroupElement.children[0].removeAttribute('id')
-                newSVGCellGroupElement.children[0].setAttribute('id', 'svg-cell-' + i + '-' + j)
+                newSVGCellGroupElement.children[0].setAttribute('id', `${OTHER.SVG_CELL_PREFIX}-` + i + '-' + j)
                 newPlayingTableRowElement.appendChild(newSVGCellGroupElement)
             }
             lotoTableContainerElement.innerHTML += newPlayingTableRowElement.outerHTML
         }
     
-        let pickedColor = "#" + OTHER_CONST.RANDOM_CELL_COLORS[randomInt(0, OTHER_CONST.RANDOM_CELL_COLORS.length - 1)]
+        let pickedColor = "#" + OTHER.RANDOM_CELL_COLORS[randomInt(0, OTHER.RANDOM_CELL_COLORS.length - 1)]
         for (let i = 0; i < 9; i++) {
-            let tempArray: string[] = []
             for (let j = 0; j < 9; j++) {
-                let svgCellElement = document.getElementById('svg-cell-' + i + '-' + j)
+                let svgCellElement = document.getElementById(`${OTHER.SVG_CELL_PREFIX}-` + i + '-' + j)
                 if (randomedLotoArrayTable[j][i] != -1) {
                     svgCellElement.children[1].children[0].innerHTML = randomedLotoArrayTable[j][i].toString()
                 } else {
@@ -280,7 +280,7 @@ function addStartGameEvent() {
                         let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
                         let newSVGMarkElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
                         newSVGMarkElement.setAttribute('version', '1.1')
-                        newSVGMarkElement.setAttribute('id', `svg-marked-${i}-${j}`)                       
+                        newSVGMarkElement.setAttribute('id', `${OTHER.SVG_MARKED_PREFIX}-${i}-${j}`)                       
                         newSVGMarkElement.setAttribute('width', '37px')
                         newSVGMarkElement.setAttribute('height', '80px')
                         newSVGMarkElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -450 : -490} 450 175 233`)
@@ -288,8 +288,7 @@ function addStartGameEvent() {
                         newSVGMarkElement.innerHTML += svgCellMarkedElement.outerHTML
                         newSVGMarkElement.children[0].removeAttribute('id')
                         markedContainerElement.appendChild(newSVGMarkElement)
-                        document.getElementById(`svg-marked-${i}-${j}`).addEventListener('click', e => {
-                            console.log(i + " - " + j)
+                        document.getElementById(`${OTHER.SVG_MARKED_PREFIX}-${i}-${j}`).addEventListener('click', e => {
                             let currentSVGMarked = e.currentTarget as HTMLElement
                             currentSVGMarked.remove()
                             markedLotoArrayTable[i][j] = 0
