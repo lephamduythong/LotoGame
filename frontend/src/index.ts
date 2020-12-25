@@ -1,4 +1,4 @@
-import './styles/style.scss';
+import './index.scss';
 import { compile } from 'handlebars'
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
