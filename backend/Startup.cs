@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LotoGameBackend.Hubs;
-using LotoGameBackend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,7 +41,6 @@ namespace LotoGameBackend
                             .AllowAnyMethod();
                     });
             });
-            services.AddTransient<NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +65,7 @@ namespace LotoGameBackend
                 endpoints.MapHub<LotoHub>("/lotohub");
             });
 
-            Task.Run(() => LotoHub.BackgroundResetCheck());
+            Task.Run(() => LotoHub.BackgroundJobs());
         }
     }
 }

@@ -164,7 +164,10 @@ function addSignalRCallbackEvent() {
     })
 
     signalRConnection.on('GameStartedCallback', (result) => {
-        console.log(result)
+        isPlaying = true
+        startButtonElement.removeAttribute('disabled')
+        isBroadcastStartTheGameImmediately = false;
+        startButtonElement.click()
     })
 }
 
@@ -315,8 +318,16 @@ function addJoinEvent() {
     })
 }
 
+let isBroadcastStartTheGameImmediately = true;
 function addStartGameEvent() {
     startButtonElement.addEventListener('click', async _ => {
+        
+        // Broadcast start the game to all players
+        if (isBroadcastStartTheGameImmediately) {
+            signalRConnection.invoke("BroadcastStartTheGameImmediately")
+            return
+        }
+        
         loadingContainerParentElement.style.display = "none"
         playingContainerElement.style.display = "grid"
         await delay(10)
