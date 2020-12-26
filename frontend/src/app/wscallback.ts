@@ -5,4 +5,3 @@ export async function activeCallbacksAsync() {
         console.log(result)
     })
 }
-

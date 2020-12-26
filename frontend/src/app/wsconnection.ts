@@ -7,4 +7,5 @@ export var connection = new signalR.HubConnectionBuilder()
 
 export function startConnection() {
     connection.start()
+    return connection
 }

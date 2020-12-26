@@ -9,9 +9,9 @@ import { compile } from 'handlebars'
 import { delay, randomInt, getPosition, parseStringToDOM } from './app/ulti'
 import { getLotoTableArray} from './app/lototablegenerator'
 import { googleVoiceCallNumber } from './app/readgooglevoicenumber';
-import { connectAndInit } from './app/firebase'
+import { startConnection } from './app/wsconnection'
 
-let dbRef = connectAndInit()
+let signalRConnection = startConnection()
 
 // Constant
 import * as HTML_ELEMENT_ID from './app/const/htmlelementid'
@@ -22,6 +22,7 @@ import * as PATH from './app/const/path'
 // Variables definition
 let debugElement : HTMLDivElement
 let isHost : boolean
+let isPlaying : boolean
 let gameContainerElement : HTMLElement
 let svgHiddenLayerElement : HTMLElement
 let audioThemeElement : HTMLAudioElement
@@ -119,8 +120,12 @@ function init() {
     inputCloseButtonElement = document.getElementById(HTML_ELEMENT_ID.INPUT_CLOSE_BUTTON) as HTMLButtonElement
     inputSubmitButtonElement = document.getElementById(HTML_ELEMENT_ID.INPUT_SUBMIT_BUTTON) as HTMLButtonElement
     inputElement = document.getElementById(HTML_ELEMENT_ID.INPUT) as HTMLInputElement
+
+    randomedLotoArrayTable = getLotoTableArray()
+    isPlaying = false
 }
 
+let currentPlayerList;
 function setup() {
     svgHiddenLayerElement.style.display = 'none'
     audioThemeCrossElement.style.display = 'none'
@@ -132,10 +137,48 @@ function setup() {
     addNextNumberButtonEvent()
     addResultBackButtonEvent()
     addCalledNumberCheckButtonEvent()
+    addSignalRCallbackEvent()
+}
+
+function addSignalRCallbackEvent() {
+    // signalRConnection.on("GetCurrentPlayerListCallback", (result) => {
+    //     currentPlayerList = result
+    // })
+
+    signalRConnection.on('JoinSingleRoomIsHostCallback', (result) => {
+        if (result)
+        {   
+            console.log('is host')
+            return
+        }
+        console.log('is not host')
+        isHost = true
+        startButtonElement.setAttribute('disabled','true')
+        startButtonElement.style.backgroundColor = "gray"
+        startButtonElement.style.cursor = "default"
+        startButtonElement.innerText = 'Hãy đợi người chơi khác'
+    })
+
+    signalRConnection.on('SendReadyCountDownTimeCallback', (result) => {
+        console.log(result)
+    })
+
+    signalRConnection.on('GameStartedCallback', (result) => {
+        console.log(result)
+    })
 }
 
 function loop() {
-
+    // Announce to server that this client is still connected
+    setInterval(_ => {
+        if (signalRConnection.state === 'Connected') {
+            // Reset player not interaction time to 0
+            signalRConnection.invoke("ResetNotInteractionTime")
+        }
+    }, 1000)
+    setInterval(_ => {
+        signalRConnection.invoke("SendReadyCountDownTime")
+    }, 1000)
 }
 
 // Template
@@ -145,7 +188,6 @@ import resultContainerTemplate from './app/template/resultcontainer'
 import calledNumberCheckContainerParentTemplate from './app/template/callednumbercheckcontainerparent'
 import markedContainerTemplate from "./app/template/markedContainer";
 import inputContainerTemplate from './app/template/inputcontainer'
-import { snap } from 'gsap';
 
 function renderDocumentTemplate() {
     let templateHead = compile(document.head.innerHTML)
@@ -190,22 +232,10 @@ function addCloseAndSubmitInputButtonEvent() {
         inputContainerElement.style.display = 'none'
         gameContainerElement.style.display = 'none'
         loadingContainerParentElement.style.display = 'flex'
-
-        dbRef.once('value', (snap) => {
-            let numberOnline = snap.val()['number-online']
-            if (numberOnline === 0) {
-                // Host
-                isHost = true
-                dbRef.update({
-                    'number-online': 1,
-                    'is-host': true
-                })
-            }
-        })
-        dbRef.update({
-            'name': inputElement.value
-        })
-    })
+ 
+        signalRConnection.invoke('JoinSingleRoom', name)
+        signalRConnection.invoke("GetRandomedLotoTable", randomedLotoArrayTable)
+    })    
 }
 
 function addCalledNumberCheckButtonEvent() {
@@ -295,17 +325,17 @@ function addStartGameEvent() {
         playingContainerElement.style.transform = "scale(1)"
         await delay(10)
         
-        randomedLotoArrayTable = getLotoTableArray() // This table is not transposed
+        // randomedLotoArrayTable = getLotoTableArray() // This table is not transposed
         for (let i = 0; i < 9; i++) {
             let newPlayingTableRowElement = document.createElement('div')
             newPlayingTableRowElement.classList.add('playing-table-row')
             for (let j = 0; j < 9; j++) {
                 let newSVGCellGroupElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
-                let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
+                let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[i][j]) >= 0) ? true : false
                 newSVGCellGroupElement.setAttribute('width', '37px')
                 newSVGCellGroupElement.setAttribute('height', '60px')
                 newSVGCellGroupElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -470 : -445} 250 75 153`)
-                if (randomedLotoArrayTable[j][i] != -1) {
+                if (randomedLotoArrayTable[i][j] != -1) {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
                 }
                 newSVGCellGroupElement.setAttribute('version', '1.1')
@@ -321,8 +351,8 @@ function addStartGameEvent() {
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 let svgCellElement = document.getElementById(`${OTHER.SVG_CELL_PREFIX}-` + i + '-' + j)
-                if (randomedLotoArrayTable[j][i] != -1) {
-                    svgCellElement.children[1].children[0].innerHTML = randomedLotoArrayTable[j][i].toString()
+                if (randomedLotoArrayTable[i][j] != -1) {
+                    svgCellElement.children[1].children[0].innerHTML = randomedLotoArrayTable[i][j].toString()
                 } else {
                     svgCellElement.children[1].children[0].innerHTML = ''
                     let rect = svgCellElement.children[0] as HTMLElement
@@ -336,12 +366,12 @@ function addStartGameEvent() {
             let childrenOfPlayingTableRowElement = childrenOfPlayingContainerElement[i].children
             for (let j = 0; j < 9; j++) {
                 childrenOfPlayingTableRowElement[j].addEventListener('click', _ => {
-                    if (randomedLotoArrayTable[j][i] != -1) {
+                    if (randomedLotoArrayTable[i][j] != -1) {
                         let el = document.getElementById('svg-cell-' + i + '-' + j)
                         clickSound.play()
                         
                         // Mark
-                        let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
+                        let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[i][j]) >= 0) ? true : false
                         let newSVGMarkElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
                         newSVGMarkElement.setAttribute('version', '1.1')
                         newSVGMarkElement.setAttribute('id', `${OTHER.SVG_MARKED_PREFIX}-${i}-${j}`)                       

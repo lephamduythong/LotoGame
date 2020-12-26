@@ -5,6 +5,3 @@ export async function activeListenersAsync() {
         connection.invoke("Test")
     })
 }
-
-
-
