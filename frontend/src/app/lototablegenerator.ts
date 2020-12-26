@@ -95,6 +95,16 @@ export function getLotoTableArray() {
             }
         }
     }
+
+    function transpose(arr: number[][]) {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < i; j++) {
+               const tmp = arr[i][j];
+               arr[i][j] = arr[j][i];
+               arr[j][i] = tmp;
+            };
+         }
+    }
     
     let mainTableArray = []
     let k = 1
@@ -109,6 +119,8 @@ export function getLotoTableArray() {
     }
 
     balanceArray(mainTableArray)
+
+    transpose(mainTableArray)
 
     return mainTableArray
 }

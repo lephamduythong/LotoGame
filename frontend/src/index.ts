@@ -252,11 +252,11 @@ function addStartGameEvent() {
             newPlayingTableRowElement.classList.add('playing-table-row')
             for (let j = 0; j < 9; j++) {
                 let newSVGCellGroupElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
-                let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
+                let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[i][j]) >= 0) ? true : false
                 newSVGCellGroupElement.setAttribute('width', '37px')
                 newSVGCellGroupElement.setAttribute('height', '60px')
                 newSVGCellGroupElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -470 : -445} 250 75 153`)
-                if (randomedLotoArrayTable[j][i] != -1) {
+                if (randomedLotoArrayTable[i][j] != -1) {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
                 }
                 newSVGCellGroupElement.setAttribute('version', '1.1')
@@ -272,8 +272,8 @@ function addStartGameEvent() {
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 let svgCellElement = document.getElementById(`${OTHER.SVG_CELL_PREFIX}-` + i + '-' + j)
-                if (randomedLotoArrayTable[j][i] != -1) {
-                    svgCellElement.children[1].children[0].innerHTML = randomedLotoArrayTable[j][i].toString()
+                if (randomedLotoArrayTable[i][j] != -1) {
+                    svgCellElement.children[1].children[0].innerHTML = randomedLotoArrayTable[i][j].toString()
                 } else {
                     svgCellElement.children[1].children[0].innerHTML = ''
                     let rect = svgCellElement.children[0] as HTMLElement
@@ -287,12 +287,12 @@ function addStartGameEvent() {
             let childrenOfPlayingTableRowElement = childrenOfPlayingContainerElement[i].children
             for (let j = 0; j < 9; j++) {
                 childrenOfPlayingTableRowElement[j].addEventListener('click', _ => {
-                    if (randomedLotoArrayTable[j][i] != -1) {
+                    if (randomedLotoArrayTable[i][j] != -1) {
                         let el = document.getElementById('svg-cell-' + i + '-' + j)
                         clickSound.play()
                         
                         // Mark
-                        let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[j][i]) >= 0) ? true : false
+                        let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[i][j]) >= 0) ? true : false
                         let newSVGMarkElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
                         newSVGMarkElement.setAttribute('version', '1.1')
                         newSVGMarkElement.setAttribute('id', `${OTHER.SVG_MARKED_PREFIX}-${i}-${j}`)                       
