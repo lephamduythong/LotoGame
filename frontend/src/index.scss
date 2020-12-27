@@ -173,6 +173,10 @@ body {
     grid-template-rows: 1fr 1fr;
 }
 
+#playing-buton-container button {
+    padding: 0 !important;
+}
+
 @keyframes highlight-win-called-number-keyframes {
     0% {
         fill: white;
