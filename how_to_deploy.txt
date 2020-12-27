@@ -1,0 +1,5 @@
+Using Cygwin supports "expect" script:
+Add PATH variable environment: "C:\cygwin\bin"
+
+cd "path_of_project"
+expect ./deploy.sh
