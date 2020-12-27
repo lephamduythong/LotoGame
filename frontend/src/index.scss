@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
 
+:root {
+    --main-background-color: #0E1113;
+}
+
+.background-color {
+    background-color: var(--main-background-color);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,7 +15,7 @@
 }
 
 body {
-    background-color: #0E1113;
+    background-color: var(--main-background-color);
     color: white;
 }
 
@@ -113,15 +121,26 @@ body {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr;
     font-size: 42px;
+    margin-left: 5px;
 }
 
-#called-number-list div {
-    padding: 5px;
+#called-number-list > div {
+    padding: 4px;
+}
+
+#called-number-list > div > div {
     text-align: center;
 }
 
-#called-number-list div:first-child {
-    background-color: rgba(50, 207, 235, 0.521);
+#called-number-list > div:first-child {
+    background-color: whitesmoke;
+    transition-property: background-color, transform;
+    transition-duration: 1s;
+}
+
+#called-number-list > div:first-child > div {
+    background-color: transparent;
+    transition-duration: 0.5s;
 }
 
 #playing-button-container {
@@ -177,6 +196,10 @@ body {
     padding: 0 !important;
 }
 
+#next-number-button {
+    background-color: rgb(19, 151, 85);
+}
+
 @keyframes highlight-win-called-number-keyframes {
     0% {
         fill: white;
@@ -206,6 +229,7 @@ body {
     text-align:center;
     background-color:#9a4ef1;
     cursor: pointer;
+    outline:none;
 }
 
 /* 
