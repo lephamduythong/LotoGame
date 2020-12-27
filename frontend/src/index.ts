@@ -4,7 +4,6 @@ import './index.scss';
 
 // Lib
 import { compile } from 'handlebars'
-import firebase from 'firebase/app';
 import 'firebase/database'
 
 // App function
@@ -117,7 +116,7 @@ function setup() {
     addAudioThemeToggleEvent()
     addJoinEvent()
     addStartGameEvent()
-    addNextNumberButtonEvent()
+    addNextNumberCallButtonEvent()
     addResultBackButtonEvent()
     addCalledNumberCheckButtonEvent()
 }
@@ -183,18 +182,23 @@ function addResultBackButtonEvent() {
             let point = resultWinPointList[i].split(',') 
             document.getElementById(`svg-cell-${point[0]}-${point[1]}`).children[0].classList.add('highlight-win-called-number')
         }
-        // Remove event listeners
         let lotoTableContainerClonedElement = lotoTableContainerElement.cloneNode(true)
         lotoTableContainerElement.remove()
         playingContainerElement.prepend(lotoTableContainerClonedElement)
         let markedContainerClonedElement = markedContainerElement.cloneNode(true) as HTMLElement
         markedContainerElement.innerHTML = markedContainerClonedElement.innerHTML
         nextNumberCallButtonElement.outerHTML = (nextNumberCallButtonElement.cloneNode(true) as HTMLElement).outerHTML
+        nextNumberCallButtonElement = document.getElementById(HTML_ELEMENT_ID.NEXT_NUMBER_BUTTON) as HTMLButtonElement
+        nextNumberCallButtonElement.style.background = "#C70039"
+        nextNumberCallButtonElement.innerText = "Chơi lại"
+        nextNumberCallButtonElement.addEventListener('click', _ => {
+            location.reload()
+        })
     })
 }
 
-function addNextNumberButtonEvent() {
-    nextNumberCallButtonElement.addEventListener('click', _ => {  
+function addNextNumberCallButtonEvent() {
+    nextNumberCallButtonElement.addEventListener('click', async _ => {  
         let randomedNumberForCallIndex = randomInt(0, notCalledNumberList.length - 1)
         let randomedNumberForCall = notCalledNumberList[randomedNumberForCallIndex]
         googleVoiceCallNumber(randomedNumberForCall)
@@ -210,10 +214,24 @@ function addNextNumberButtonEvent() {
         notCalledNumberList.splice(randomedNumberForCallIndex, 1)
         calledNumberListElement.lastElementChild.remove()
         let calledNumberContainerElement = document.createElement('div')
-        calledNumberContainerElement.innerText = randomedNumberForCall.toString()
+        let innerDivElement = document.createElement("div")
+        innerDivElement.style.transform = `translateY(${randomInt(-200, 200)}px) rotate(${randomInt(-360, 360)}deg)`
+        innerDivElement.innerText = randomedNumberForCall.toString()
+        calledNumberContainerElement.append(innerDivElement)
         calledNumberListElement.prepend(calledNumberContainerElement)
+        let nextSiblingOfCalledNumberContainerElement = calledNumberContainerElement.nextSibling as HTMLElement
+        if (nextSiblingOfCalledNumberContainerElement.style) {
+            nextSiblingOfCalledNumberContainerElement.style.backgroundColor = "#0E1113"
+        }
+        await delay(10)
+        innerDivElement.style.transform = "translateY(0) rotate(0)"
+        calledNumberContainerElement.style.backgroundColor = "rgba(50, 207, 235, 0.521)"
     })
 }
+
+setInterval(_ => {
+    console.log(randomInt(0,10))
+},500)
 
 function addAudioThemeToggleEvent() {
     function handleClick() {
