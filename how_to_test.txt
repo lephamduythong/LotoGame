@@ -1,0 +1,6 @@
+Plug Android phone
+Enable USB debugging
+Allow adb connection
+Add Cygwin /bin directory to PATH env
+
+bash ./test_device.sh
