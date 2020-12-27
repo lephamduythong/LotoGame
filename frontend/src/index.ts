@@ -183,6 +183,13 @@ function addResultBackButtonEvent() {
             let point = resultWinPointList[i].split(',') 
             document.getElementById(`svg-cell-${point[0]}-${point[1]}`).children[0].classList.add('highlight-win-called-number')
         }
+        // Remove event listeners
+        let lotoTableContainerClonedElement = lotoTableContainerElement.cloneNode(true)
+        lotoTableContainerElement.remove()
+        playingContainerElement.prepend(lotoTableContainerClonedElement)
+        let markedContainerClonedElement = markedContainerElement.cloneNode(true) as HTMLElement
+        markedContainerElement.innerHTML = markedContainerClonedElement.innerHTML
+        nextNumberCallButtonElement.outerHTML = (nextNumberCallButtonElement.cloneNode(true) as HTMLElement).outerHTML
     })
 }
 
