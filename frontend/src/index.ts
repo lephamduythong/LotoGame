@@ -1,6 +1,7 @@
 // Style
 import '../node_modules/normalize.css/normalize.css'
 import './index.scss';
+import './app/responsive.scss';
 
 // Lib
 import { compile } from 'handlebars'
@@ -274,8 +275,8 @@ function addStartGameEvent() {
             for (let j = 0; j < 9; j++) {
                 let newSVGCellGroupElement = document.createElementNS('http://www.w3.org/2000/svg','svg')
                 let isInFisrtColumnRange = (lotoTableFirstColumnRange.indexOf(randomedLotoArrayTable[i][j]) >= 0) ? true : false
-                newSVGCellGroupElement.setAttribute('width', '37px')
-                newSVGCellGroupElement.setAttribute('height', '60px')
+                newSVGCellGroupElement.setAttribute('width', `${(screen.width > 300 && screen.width < 340) ? 32 : 37}px`)
+                newSVGCellGroupElement.setAttribute('height', `${(screen.height > 480 && screen.height < 600) ? 52 : 60}px`)
                 newSVGCellGroupElement.setAttribute('viewBox', `${isInFisrtColumnRange ? -470 : -445} 250 75 153`)
                 if (randomedLotoArrayTable[i][j] != -1) {
                     newSVGCellGroupElement.setAttribute('style', 'cursor: pointer')
