@@ -136,6 +136,7 @@ body {
     background-color: whitesmoke;
     transition-property: background-color, transform;
     transition-duration: 1s;
+    overflow: hidden;
 }
 
 #called-number-list > div:first-child > div {
