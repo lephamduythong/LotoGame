@@ -215,7 +215,7 @@ function addNextNumberCallButtonEvent() {
         calledNumberListElement.lastElementChild.remove()
         let calledNumberContainerElement = document.createElement('div')
         let innerDivElement = document.createElement("div")
-        innerDivElement.style.transform = `translateY(${randomInt(-200, 200)}px) rotate(${randomInt(-360, 360)}deg)`
+        innerDivElement.style.transform = `translate(${randomInt(-200, 200)}px, ${randomInt(-200, 200)}px) rotate(${randomInt(-360, 360)}deg)`
         innerDivElement.innerText = randomedNumberForCall.toString()
         calledNumberContainerElement.append(innerDivElement)
         calledNumberListElement.prepend(calledNumberContainerElement)
@@ -224,14 +224,10 @@ function addNextNumberCallButtonEvent() {
             nextSiblingOfCalledNumberContainerElement.style.backgroundColor = "#0E1113"
         }
         await delay(10)
-        innerDivElement.style.transform = "translateY(0) rotate(0)"
+        innerDivElement.style.transform = "translate(0, 0) rotate(0)"
         calledNumberContainerElement.style.backgroundColor = "rgba(50, 207, 235, 0.521)"
     })
 }
-
-setInterval(_ => {
-    console.log(randomInt(0,10))
-},500)
 
 function addAudioThemeToggleEvent() {
     function handleClick() {
