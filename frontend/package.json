@@ -33,8 +33,9 @@
   },
   "dependencies": {
     "@microsoft/signalr": "^5.0.1",
+    "@types/animejs": "^3.1.2",
     "@types/node": "^14.14.12",
-    "gsap": "npm:@gsap/member@^3.5.1",
+    "animejs": "^3.2.1",
     "normalize.css": "^8.0.1"
   }
 }
