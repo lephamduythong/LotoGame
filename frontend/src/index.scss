@@ -180,7 +180,7 @@ body {
     opacity: 0.1;
     transition-property: transform, opacity;
     transition-duration: .5s;
-    transition-timing-function: cubic-bezier(.25,.58,.84,.01);
+    transition-timing-function: ease-in-out;
 }
 
 #called-number-check-list {
